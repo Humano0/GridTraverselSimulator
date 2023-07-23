@@ -1,4 +1,13 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from "react";
+import ReactDOM from "react-dom";
+import { SettingsBar } from "./components/SettingsBar";
 
-ReactDOM.render(<h1>hello</h1>, document.getElementById('root'));
+export default function App() {
+    return (
+        <div>
+            <SettingsBar />
+        </div>
+    );
+}
+
+ReactDOM.render(<App />, document.getElementById("root"));
