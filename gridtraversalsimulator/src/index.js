@@ -1,11 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { SettingsBar } from "./components/SettingsBar";
+import SettingStructure from "./components/SettingStructure.jsx";
 
 export default function App() {
     return (
         <div>
-            <SettingsBar />
+            <SettingStructure />
         </div>
     );
 }
