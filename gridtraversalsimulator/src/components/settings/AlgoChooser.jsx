@@ -13,7 +13,6 @@ export default function AlgoChooser() {
     const handleOptionChange = (event) => {
         setSelectedOption(event.target.value);
     };
-    console.log(selectedOption, handleOptionChange.value);
 
     const selectStyle = {
         marginLeft: "2%"

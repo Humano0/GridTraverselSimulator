@@ -1,10 +1,12 @@
-export default function GridStructure() {
+import { SimpleGrid } from "../grid/SimpleGrid"
+
+export default function GridStructure({ rows, columns }) {
     const gridWrapperStyle = {
         margin: "1%",
     }
     return (
         <div style={gridWrapperStyle}>
-            div
+            <SimpleGrid rows={rows} columns={columns} />
         </div>
     )
 }

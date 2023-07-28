@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
 
-export default function Sizer() {
-    const [rowValue, setRowValue] = useState('');
-    const [columnValue, setColumnValue] = useState('');
-
+export default function Sizer({ rowValue, columnValue, setRowValue, setColumnValue, handleApplyClick }) {
     const handleChange = (event, setValue) => {
         let inputValue = event.target.value.replace(/\D/g, ''); // Remove non-numeric characters
         // Restrict the input to two digits if it's greater than two
@@ -17,27 +14,27 @@ export default function Sizer() {
     };
 
     const outerDivStyle = {
-        display: "flex",
-        flexDirection: "row",
-    }
+        display: 'flex',
+        flexDirection: 'row',
+    };
 
     const inputStyle = {
-        display: "flex",
-        flexDirection: "column", // Change to "column" for vertical stacking
-        alignItems: "center", // Align items horizontally in the center
-        margin: "5%",
-        flexBasis: "50%",
+        display: 'flex',
+        flexDirection: 'column', // Change to "column" for vertical stacking
+        alignItems: 'center', // Align items horizontally in the center
+        margin: '5%',
+        flexBasis: '50%',
     };
 
     const buttonStyle = {
-        display: "flex",
-        flexDirection: "row",
-        flexBasis: "50%",
-        justifyContent: "center",
-        alignItems: "center",
+        display: 'flex',
+        flexDirection: 'row',
+        flexBasis: '50%',
+        justifyContent: 'center',
+        alignItems: 'center',
     };
 
-    const inputWidth = { width:"100%", margin: "2%" };
+    const inputWidth = { width: '100%', margin: '2%' };
 
     return (
         <div style={outerDivStyle}>
@@ -60,7 +57,7 @@ export default function Sizer() {
                 />
             </div>
             <div style={buttonStyle}>
-                <button>Apply</button>
+                <button onClick={handleApplyClick}>Apply</button>
             </div>
         </div>
     );
