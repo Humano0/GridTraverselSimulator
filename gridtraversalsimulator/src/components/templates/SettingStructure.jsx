@@ -7,7 +7,7 @@ import Sizer from '../settings/Sizer';
 
 import '../../styles/settingStructure.css'
 
-export default function SettingStructure({ setRowValue, setColumnValue, setMode }) {
+export default function SettingStructure({ setRowValue, setColumnValue, setSelectingMode }) {
     return (
         <div className='settingsWrapper'>
             <Sizer
@@ -15,7 +15,8 @@ export default function SettingStructure({ setRowValue, setColumnValue, setMode 
                 setColumnValue={setColumnValue}
             />
             <NodeSelector
-                setMode={setMode} />
+                setSelectingMode={setSelectingMode}
+            />
             <AlgoChooser />
             <Simulate />
         </div>

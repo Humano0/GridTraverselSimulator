@@ -1,7 +1,7 @@
 import '../../styles/sizer.css';
 import { handleInputChange } from '../../scripts/handleInputChange';
 
-export default function Sizer({ setRowValue, setColumnValue }) {
+export default function Sizer({ setRowValue, setColumnValue, setSelectingMode }) {
     return (
         <div className='outerDiv'>
             <div className='innerRowDiv'>

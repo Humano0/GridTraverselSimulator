@@ -6,7 +6,7 @@ import '../styles/mainStructure.css';
 export default function MainStructure() {
     const [rowValue, setRowValue] = useState(2);
     const [columnValue, setColumnValue] = useState(2);
-    const [mode, setMode] = useState(0);
+    const [selectingMode, setSelectingMode] = useState(0);
     const [gridContent, setGridContent] = useState([]);
 
     return (
@@ -14,7 +14,7 @@ export default function MainStructure() {
             <SettingStructure
                 setRowValue={setRowValue}
                 setColumnValue={setColumnValue}
-                setMode={setMode}
+                setSelectingMode={setSelectingMode}
             />
             <GridStructure
                 rows={rowValue}

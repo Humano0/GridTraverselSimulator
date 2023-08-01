@@ -1,3 +1,3 @@
-export function handleModeChange(event, setMode) {
-    setMode(event.target.value);
+export function handleModeChange(event, setSelectingMode) {
+    setSelectingMode(event.target.id);
 }
