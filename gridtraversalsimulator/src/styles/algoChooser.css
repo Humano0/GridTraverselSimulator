@@ -1,0 +1,10 @@
+.algoWrapperDiv {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 5% 0 5% 0;
+}
+
+.algoWrapperDiv .algoSelector {
+    margin-left: 2%;
+}

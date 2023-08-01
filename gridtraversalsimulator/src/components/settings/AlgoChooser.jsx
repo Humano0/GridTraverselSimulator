@@ -1,36 +1,23 @@
 import React, { useState } from 'react';
+import { handleAlgorithmChange } from '../../scripts/handleOptionChange';
+import '../../styles/algoChooser.css'
 
 export default function AlgoChooser() {
-    // Define your list of options here
+    const [selectedOption, setSelectedOption] = useState('');
+
+    // Add more options as needed
     const options = [
         'Breadth First Search',
         'Depth First Search',
-        // Add more options as needed
     ];
 
-    const [selectedOption, setSelectedOption] = useState('');
-
-    const handleOptionChange = (event) => {
-        setSelectedOption(event.target.value);
-    };
-
-    const selectStyle = {
-        marginLeft: "2%"
-    }
-    const wrapperDivStyle = {
-        display: "flex",
-        flexDirection: "row",
-        justifyContent: "center",
-        margin: "10% 0 10% 0"
-    }
     return (
-        <div style={wrapperDivStyle}>
+        <div className='algoWrapperDiv'>
             <label htmlFor="list-chooser">Select an algorithm:</label>
             <select
-                id="list-chooser"
+                className='algoSelector'
                 value={selectedOption}
-                onChange={handleOptionChange}
-                style={selectStyle}
+                onChange={(event) => handleAlgorithmChange(event, setSelectedOption)}
             >
                 <option value="">-- algorithm --</option>
                 {options.map((option) => (
@@ -39,7 +26,6 @@ export default function AlgoChooser() {
                     </option>
                 ))}
             </select>
-            {/*selectedOption && <p>You selected: {selectedOption}</p>*/}
         </div>
     );
 }

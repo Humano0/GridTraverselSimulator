@@ -1,0 +1,11 @@
+.nodeSelectorWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.nodeSelectorWrapper button {
+    display: flex;
+    width: 60%;
+    justify-content: center;
+    margin: 2%;
+}
