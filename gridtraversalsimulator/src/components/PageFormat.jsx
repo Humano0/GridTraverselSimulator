@@ -1,46 +1,27 @@
 import GridStructure from "./templates/GridStructure";
 import SettingStructure from "./templates/SettingStructure";
 import { useState } from "react";
+import "../styles/mainStructure.css";
 
 export default function MainStructure() {
-    const [rowValue, setRowValue] = useState('');
-    const [columnValue, setColumnValue] = useState('');
-    const [gridCreated, setGridCreated] = useState(false);
+  const [rowValue, setRowValue] = useState(2);
+  const [columnValue, setColumnValue] = useState(2);
+  //const [gridContent, setGridContent] = useState([]);
 
-    const handleChange = (event, setValue) => {
-        let inputValue = event.target.value.replace(/\D/g, ''); // Remove non-numeric characters
-        // Restrict the input to two digits if it's greater than two
-        if (isNaN(inputValue) || inputValue < 2) {
-          inputValue = '';
-        } else if (inputValue > 99) {
-          inputValue = '99';
-        }
-        event.target.value = inputValue;
-        setValue(inputValue);
-    };
-
-    const handleApplyClick = () => {
-        if(rowValue && columnValue) {
-            setGridCreated(true);
-        } else {
-            alert("Please enter both row and column values");
-        }
-    };
-
-    const wrapperDivStyle = {
-        display: "flex",
-        flexDirection: "row",
-    }
-    return (
-        <div style={wrapperDivStyle}>
-            <SettingStructure
-                rowValue={rowValue}
-                setRowValue={setRowValue}
-                columnValue={columnValue}
-                setColumnValue={setColumnValue}
-                handleApplyClick={handleApplyClick}
-            />
-            {gridCreated && <GridStructure rows={rowValue} columns={columnValue} />}
-        </div>
-    )
+  return (
+    <div className="wrapperDiv">
+        <SettingStructure
+            setRowValue={setRowValue}
+            setColumnValue={setColumnValue}
+        />
+        {/*<GridStructure
+            rows={rowValue}
+            columns={columnValue}
+            changes={changes}
+            setChanges={setChanges}
+            gridContent={gridContent}
+            setGridContent={setGridContent}
+        />*/}
+    </div>
+  );
 }

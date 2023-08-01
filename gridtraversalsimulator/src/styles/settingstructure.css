@@ -1,0 +1,8 @@
+.settingsWrapper {
+    display: 'flex';
+    flex-direction: 'column';
+    height: '100%';
+    width: '20%';
+    border: '1px solid black';
+    margin: '.3%';
+}

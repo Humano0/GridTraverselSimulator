@@ -1,63 +1,28 @@
-import React, { useState } from 'react';
+import '../../styles/sizer.css';
+import { handleChange } from '../../scripts/handleChange';
 
-export default function Sizer({ rowValue, columnValue, setRowValue, setColumnValue, handleApplyClick }) {
-    const handleChange = (event, setValue) => {
-        let inputValue = event.target.value.replace(/\D/g, ''); // Remove non-numeric characters
-        // Restrict the input to two digits if it's greater than two
-        if (isNaN(inputValue) || inputValue < 2) {
-            inputValue = '';
-        } else if (inputValue > 99) {
-            inputValue = '99';
-        }
-        event.target.value = inputValue;
-        setValue(inputValue);
-    };
-
-    const outerDivStyle = {
-        display: 'flex',
-        flexDirection: 'row',
-    };
-
-    const inputStyle = {
-        display: 'flex',
-        flexDirection: 'column', // Change to "column" for vertical stacking
-        alignItems: 'center', // Align items horizontally in the center
-        margin: '5%',
-        flexBasis: '50%',
-    };
-
-    const buttonStyle = {
-        display: 'flex',
-        flexDirection: 'row',
-        flexBasis: '50%',
-        justifyContent: 'center',
-        alignItems: 'center',
-    };
-
-    const inputWidth = { width: '100%', margin: '2%' };
-
+export default function Sizer({ setRowValue, setColumnValue }) {
     return (
-        <div style={outerDivStyle}>
-            <div style={inputStyle}>
+        <div className='outerDiv'>
+            <div className='innerRowDiv'>
+                <label htmlFor="rowInput">Row:</label>
                 <input
                     type="number"
                     min="2"
                     max="100"
-                    placeholder="row"
-                    style={inputWidth}
-                    onInput={(event) => handleChange(event, setRowValue)}
-                />
-                <input
-                    type="number"
-                    min="2"
-                    max="100"
-                    placeholder="column"
-                    style={inputWidth}
-                    onInput={(event) => handleChange(event, setColumnValue)}
+                    placeholder="Enter row number (2 - 99)"
+                    onChange={(event) => handleChange(event, setRowValue)}
                 />
             </div>
-            <div style={buttonStyle}>
-                <button onClick={handleApplyClick}>Apply</button>
+            <div className='innerRowDiv'>
+                <label htmlFor="columnInput">Column:</label>
+                <input
+                    type="number"
+                    min="2"
+                    max="100"
+                    placeholder="Enter column number (2 - 99)"
+                    onChange={(event) => handleChange(event, setColumnValue)}
+                />
             </div>
         </div>
     );
