@@ -1,4 +1,4 @@
-.wrapperDiv {
+.mainStructureWrapper {
     display: "flex";
     flex-direction: "row";
 }

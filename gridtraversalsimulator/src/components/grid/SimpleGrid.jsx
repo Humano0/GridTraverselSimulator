@@ -1,6 +1,7 @@
 import React from 'react';
 
 export function SimpleGrid({ rows = 2, columns = 2}) {
+    /*
     const gridContainerStyle = {
         display: 'flex',
         flexWrap: 'wrap',
@@ -27,4 +28,6 @@ export function SimpleGrid({ rows = 2, columns = 2}) {
     console.log(gridContent)
 
     return <div style={gridContainerStyle}>{gridContent}</div>;
+    */
+    return <div>lol</div>;
 }

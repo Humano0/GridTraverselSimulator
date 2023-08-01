@@ -1,17 +1,12 @@
 import { SimpleGrid } from "../grid/SimpleGrid"
+import { memo } from "react";
+import '../../styles/gridStructure.css'
 
-export default function GridStructure({ rows, columns, changes, setChanges, gridContent, setGridContent }) {
-    const gridWrapperStyle = {
-        margin: "1%",
-    }
-
-    if(changes){
-        return (
-            <div style={gridWrapperStyle}>
-                <SimpleGrid rows={rows} columns={columns} changes={changes} setChanges={setChanges} gridContent={gridContent} setGridContent={setGridContent} />
-            </div>
-        )
-    } else {
-        return null;
-    }
-}
+const GridStructure = memo(function Grid({ rows, columns, selectingMode, gridContent, setGridContent }) {
+    return (
+        <div className="gridStructureWrapper">
+            <SimpleGrid rows={rows} columns={columns} selectingMode={selectingMode} gridContent={gridContent} setGridContent={setGridContent} />
+        </div>
+    )
+});
+export default GridStructure;

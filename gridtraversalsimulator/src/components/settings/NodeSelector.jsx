@@ -1,20 +1,13 @@
 import '../../styles/nodeSelector.css'
+import { handleModeChange } from '../../scripts/handleModeChange'
 
-export default function NodeSelector(setSelectingMode) {
-    const handleChangeSelectingMode = (event) => {
-        if(event.target.id === 1) {
-            setSelectingMode(1);
-        } else if(event.target.id === 2) {
-            setSelectingMode(2);
-        } else if(event.target.id === 3) {
-            setSelectingMode(3);
-        }
-    }
+export default function NodeSelector(setMode) {
+    console.log(setMode + "lol")
     return (
         <div className='nodeSelectorWrapper'>
-            <button id='1' onClick={(event) => handleChangeSelectingMode(event)}>Start Node</button>
-            <button id='2' onClick={(event) => handleChangeSelectingMode(event)}>Blockade Node</button>
-            <button id='3' onClick={(event) => handleChangeSelectingMode(event)}>End Node</button>
+            <button id='1' onClick={(event) => handleModeChange(event, setMode)}>Start Node</button>
+            <button id='2' onClick={(event) => handleModeChange(event, setMode)}>Blockade Node</button>
+            <button id='3' onClick={(event) => handleModeChange(event, setMode)}>End Node</button>
         </div>
     )
 }
