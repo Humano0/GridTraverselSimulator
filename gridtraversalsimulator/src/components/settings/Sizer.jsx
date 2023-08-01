@@ -1,5 +1,5 @@
 import '../../styles/sizer.css';
-import { handleChange } from '../../scripts/handleChange';
+import { handleInputChange } from '../../scripts/handleInputChange';
 
 export default function Sizer({ setRowValue, setColumnValue }) {
     return (
@@ -11,7 +11,7 @@ export default function Sizer({ setRowValue, setColumnValue }) {
                     min="2"
                     max="100"
                     placeholder="Enter row number (2 - 99)"
-                    onChange={(event) => handleChange(event, setRowValue)}
+                    onChange={(event) => handleInputChange(event, setRowValue)}
                 />
             </div>
             <div className='innerRowDiv'>
@@ -21,7 +21,7 @@ export default function Sizer({ setRowValue, setColumnValue }) {
                     min="2"
                     max="100"
                     placeholder="Enter column number (2 - 99)"
-                    onChange={(event) => handleChange(event, setColumnValue)}
+                    onChange={(event) => handleInputChange(event, setColumnValue)}
                 />
             </div>
         </div>

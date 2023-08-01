@@ -1,4 +1,4 @@
-export const handleChange = (event, setValue) => {
+export const handleInputChange = (event, setValue) => {
 	let inputValue = event.target.value;
 
 	// Use regular expression to filter out non-numeric characters
