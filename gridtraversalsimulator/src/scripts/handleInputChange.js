@@ -7,8 +7,8 @@ export const handleInputChange = (event, setValue) => {
 	// Check if the input is a valid number (between 2 and 99)
 	if (isNaN(inputValue) || inputValue < 2) {
 		inputValue = 2;
-	} else if (inputValue > 99) {
-		inputValue = 99;
+	} else if (inputValue > 50) {
+		inputValue = 50;
 	}
 
 	// Update the input field value and state value

@@ -9,8 +9,8 @@ export default function Sizer({ setRowValue, setColumnValue, setSelectingMode })
                 <input
                     type="number"
                     min="2"
-                    max="100"
-                    placeholder="Enter row number (2 - 99)"
+                    max="50"
+                    placeholder="Enter row number (2 - 50)"
                     onChange={(event) => handleInputChange(event, setRowValue)}
                 />
             </div>
@@ -19,8 +19,8 @@ export default function Sizer({ setRowValue, setColumnValue, setSelectingMode })
                 <input
                     type="number"
                     min="2"
-                    max="100"
-                    placeholder="Enter column number (2 - 99)"
+                    max="50"
+                    placeholder="Enter column number (2 - 50)"
                     onChange={(event) => handleInputChange(event, setColumnValue)}
                 />
             </div>

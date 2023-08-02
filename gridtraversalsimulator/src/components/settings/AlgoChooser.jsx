@@ -2,9 +2,7 @@ import React, { useState } from 'react';
 import { handleAlgorithmChange } from '../../scripts/handleOptionChange';
 import '../../styles/algoChooser.css'
 
-export default function AlgoChooser() {
-    const [selectedOption, setSelectedOption] = useState('');
-
+export default function AlgoChooser({ selectedOption, setSelectedOption }) {
     // Add more options as needed
     const options = [
         'Breadth First Search',
