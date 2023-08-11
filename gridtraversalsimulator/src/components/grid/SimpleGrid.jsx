@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import { handleGridClick } from "../../scripts/handleGridClick.js";
+import "../../styles/simpleGrid.css";
 
 export function SimpleGrid({ rows, columns, selectingMode }) {
+    //const [startNode, setStartNode] = useState('');
+    //const [blockNode, setBlockNode] = useState([]);
+    //const [endNode, setEndNode] = useState('');
     const createInitialGrids = (rows, columns) => {
         const newArray = [];
         for (let i = 0; i < rows; i++) {
@@ -12,7 +17,6 @@ export function SimpleGrid({ rows, columns, selectingMode }) {
         }
         return newArray;
     };
-
     const [grids, setGrids] = useState(createInitialGrids);
 
     useEffect(() => {
@@ -20,32 +24,28 @@ export function SimpleGrid({ rows, columns, selectingMode }) {
     }, [rows, columns]);
     const gridContainerStyle = {
         display: 'flex',
+        flexDirection: 'row',
         flexWrap: 'wrap',
         gap: '5px',
-        backgroundColor: 'lightgray', // Change the background color of the grid
+        backgroundColor: 'lightgray',
     };
 
     const gridItemStyle = {
-        flexBasis: `calc(100% / ${columns} - 10px)`, // Adjust the width of grid items based on the number of columns
-        width: '5px',
-        height: '10px', // Adjust the height of grid items as needed
-        backgroundColor: 'white', // Change the background color of grid items
-        border: '1px solid black', // Add a border around grid items
+        flexBasis: `calc(100% / ${columns} - 10px)`,
+        width: '4px',
+        height: '10px',
+        backgroundColor: 'white',
+        border: '1px solid black',
         marginBottom: '3px',
     };
     return (
         <div style={gridContainerStyle}>
-            {grids.map((row, i) => (
-                <div key={i}>
-                    {row.map((cell, j) => (
+            {Array.from({ length: columns }, (_, i) => (
+                <div key={i + 1} id={i} onClick={(event) => handleGridClick(event, selectingMode)}>
+                    {Array.from({ length: rows }, (_, j) => (
                         <div
-                            key={`${i}-${j}`}
+                            id={`${j}-${i}`}
                             style={gridItemStyle}
-                            onClick={() => {
-                                const updatedGrids = [...grids];
-                                updatedGrids[i][j] = (updatedGrids[i][j] + 1) % 2;
-                                setGrids(updatedGrids);
-                            }}
                         ></div>
                     ))}
                 </div>

@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import { handleAlgorithmChange } from '../../scripts/handleOptionChange';
 import '../../styles/algoChooser.css'
 

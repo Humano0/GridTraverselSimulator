@@ -1,0 +1,11 @@
+.startNode {
+    background-color: green;
+}
+
+.blockNode {
+    background-color: red;
+}
+
+.endNode {
+    background-color: blue;
+}
