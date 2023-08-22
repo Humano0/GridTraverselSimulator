@@ -15,17 +15,19 @@ body {
     color: white;
     display: flex;
     align-items: center;
+    justify-content: center;
     padding-left: 20px;
 }
 
 .settingsBar {
     width: 24%;
     height: 90vh;
-    border: 5px solid black;
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
+    position: relative;
     justify-content:flex-start;
+    padding: 2px;
 }
 
 .footer {
@@ -39,10 +41,19 @@ body {
     justify-content: center;
 }
 
+.settingsBar > .settingsChild {
+    border-radius: 20px;
+    border: 1px solid black;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    -ms-border-radius: 20px;
+    -o-border-radius: 20px;
+}
+
 .sizeModifier {
     display: flex;
     flex-direction: row;
-    width: 100%;
+    width: 90%;
     height: 10%;
     padding: 5%;
 }
@@ -79,7 +90,6 @@ body {
 }
 
 .nodeSelector {
-    width: 90%;
     height: 20%;
     display: flex;
     flex-direction: column;
@@ -97,7 +107,6 @@ body {
     width: 100%;
     text-align: center;
     align-items: center;
-    justify-content: space-evenly;
 }
 
 .algoWrapperDiv select {
@@ -107,4 +116,13 @@ body {
 .simulateWrapper {
     display: flex;
     justify-content: center;
+}
+
+.collapser {
+    align-items: flex-end;
+    text-align: center;
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    left: 0;
 }

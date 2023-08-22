@@ -13,7 +13,7 @@
     </div>
     <div>
         <div class="settingsBar">
-            <div class="sizeModifier">
+            <div class="settingsChild sizeModifier">
                 <div class="inputWrapperDiv">
                     <div class="inputDiv">
                         <label for="rowInput">Row:</label>
@@ -29,13 +29,13 @@
                 </div>
             </div>
             <br>
-            <div class="nodeSelector">
+            <div class="settingsChild nodeSelector">
                 <button>Start Node</button>
                 <button>Block Node</button>
                 <button>End Node</button>
             </div>
             <br><br>
-            <div class="algoWrapperDiv">
+            <div class="settingsChild algoWrapperDiv">
                 <label for="list-chooser">Select an algorithm:</label><br>
                 <select class="algoSelector" value="" onchange="handleAlgorithmChange(event, this.value)">
                     <option value="">-- algorithm --</option>
@@ -44,8 +44,11 @@
                 </select>
             </div>
             <br><br>
-            <div class="simulateWrapper">
-                <button>Simulate</button>
+            <div class="settingsChild simulateWrapper">
+                <p>SIMULATE</p>
+            </div>
+            <div class="settingsChild collapser">
+                <p>⬅ Collapse</p>
             </div>
         </div>
 
