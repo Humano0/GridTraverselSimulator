@@ -1,5 +1,6 @@
 body {
     margin: 0;
+    padding: 0;
     overflow: hidden;
     display: flex;
     flex-direction: column;
@@ -18,11 +19,13 @@ body {
 }
 
 .settingsBar {
-    width: 20%;
-    height: 90vh; /* Adjusted height */
+    width: 24%;
+    height: 90vh;
     border: 5px solid black;
     display: flex;
     flex-direction: column;
+    flex-wrap: wrap;
+    justify-content:flex-start;
 }
 
 .footer {
@@ -44,7 +47,7 @@ body {
     padding: 5%;
 }
 
-.inputDiv {
+.inputWrapperDiv {
     display: flex;
     flex-direction: column;
     flex-basis: 50%;
@@ -52,6 +55,21 @@ body {
     margin-left: 3%;
     margin-right: 3%;
 }
+
+.inputDiv {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.inputDiv label {
+    text-align: left;
+}
+
+.inputDiv input {
+    text-align: right;
+}
+
 
 .buttonDiv {
     display: flex;
@@ -61,7 +79,32 @@ body {
 }
 
 .nodeSelector {
+    width: 90%;
+    height: 20%;
     display: flex;
     flex-direction: column;
-    padding: 5%;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.nodeSelector button {
+    width: 80%;
+}
+
+.algoWrapperDiv {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    text-align: center;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.algoWrapperDiv select {
+    width: 80%;
+}
+
+.simulateWrapper {
+    display: flex;
+    justify-content: center;
 }

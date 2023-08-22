@@ -11,28 +11,52 @@
     <div class="header">
         <p>Grid Traversal Simulator</p>
     </div>
-    <div class="settingsBar">
-        <div class="sizeModifier">
-            <div class="inputDiv">
-                <input type="number" min="2" max="50">
-                <input type="number" min="2" max="50">
+    <div>
+        <div class="settingsBar">
+            <div class="sizeModifier">
+                <div class="inputWrapperDiv">
+                    <div class="inputDiv">
+                        <label for="rowInput">Row:</label>
+                        <input type="number" min="2" max="50">
+                    </div>
+                    <div class="inputDiv">
+                        <label for="columnInput">Column:</label>
+                        <input type="number" min="2" max="50">
+                    </div>
+                </div>
+                <div class="buttonDiv">
+                    <button>Apply</button>
+                </div>
             </div>
-            <div class="buttonDiv">
-                <button>Apply</button>
+            <br>
+            <div class="nodeSelector">
+                <button>Start Node</button>
+                <button>Block Node</button>
+                <button>End Node</button>
+            </div>
+            <br><br>
+            <div class="algoWrapperDiv">
+                <label for="list-chooser">Select an algorithm:</label><br>
+                <select class="algoSelector" value="" onchange="handleAlgorithmChange(event, this.value)">
+                    <option value="">-- algorithm --</option>
+                    <option value="option1">BFS</option>
+                    <option value="option2">DFS</option>
+                </select>
+            </div>
+            <br><br>
+            <div class="simulateWrapper">
+                <button>Simulate</button>
             </div>
         </div>
 
-        <div class="nodeSelector">
-            <button>Start Node</button>
-            <button>Block Node</button>
-            <button>End Node</button>
+        <div class="gridStructureWrapper">
+            
         </div>
-    </div>
-    <div class="">
-
     </div>
     <div class="footer">
 
     </div>
+    <script src="./handleAlgorithmChange.js"></script>
+    <script src="./libs/jquery-3.7.0.min.js"></script>
 </body>
 </html>
