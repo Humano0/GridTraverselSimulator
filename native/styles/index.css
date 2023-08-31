@@ -1,0 +1,106 @@
+:root {
+    --liner-font-color: #ffffff;
+    --liner-background-color: black;
+    --settings-font-color: black;
+    --settings-background-color: #000000;
+
+    --header-height: 5vh;
+    --footer-height: 3vh;
+    --content-height: calc(100vh - var(--header-height) - var(--footer-height));
+
+    --settings-width: 20vw;
+    --grid-layout-width: calc(100vw - var(--settings-width));
+}
+
+.header {
+    position: inline;
+    width: 100vw;
+    height: var(--header-height);
+    background-color: var(--liner-background-color);
+    color: var(--liner-font-color);
+    text-align: center;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-size: calc(var(--header-height) - 1vh);
+}
+.header-text {
+    margin: 0.5vh;
+    display: inline-block;
+}
+.footer {
+    position: inline;
+    width: 100vw;
+    height: var(--footer-height);
+    bottom: 0vh;
+    background-color: var(--liner-background-color);
+    color: var(--liner-font-color);
+}
+
+.content-wrapper {
+    display: flex;
+    flex-direction: row;
+    height: var(--content-height);
+}
+
+.settings-bar-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: var(--settings-width);
+    padding: 1vh;
+    justify-content: space-between;
+    position: relative;
+}
+
+.input-outer-wrapper {
+    display: flex;
+    flex-direction: row;
+    height: 8vh;
+    border: 1px solid black;
+    border-radius: 1rem;
+    justify-content: center;
+    -webkit-border-radius: 1rem;
+    -moz-border-radius: 1rem;
+    -ms-border-radius: 1rem;
+    -o-border-radius: 1rem;
+}
+
+.input-wrapper {
+    flex-direction: column;
+}
+
+
+.settings-toggler-wrapper {
+    position: absolute;
+    left: calc(var(--settings-width) / 2);
+    top: 1vh;
+    font-size: 1vh;
+}
+.material-symbols-outlined {
+    user-select: none;
+    justify-content: center;
+    color: white;
+    transform-style: preserve-3d;
+    transition: transform 0.3s;
+    -webkit-transition: transform 0.3s;
+    -moz-transition: transform 0.3s;
+    -ms-transition: transform 0.3s;
+    -o-transition: transform 0.3s;
+}
+.flipped {
+    transform: rotateX(180deg);
+    -webkit-transform: rotateX(180deg);
+    -moz-transform: rotateX(180deg);
+    -ms-transform: rotateX(180deg);
+    -o-transform: rotateX(180deg);
+}
+
+@media (max-height: 500px) {
+    .settings-toggler-wrapper {
+        top: -5vh;
+    }
+}
+
+@media (max-height: 400px) {
+    .settings-toggler-wrapper {
+        top: -6vh;
+    }
+}
