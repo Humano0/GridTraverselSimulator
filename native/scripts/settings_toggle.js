@@ -1,7 +1,7 @@
 $(document).ready(function() {
     $('.just-wrapper').on('click', function() {
         $('.material-symbols-outlined').toggleClass('flipped');
-        $('.settings-bar-wrapper').toggle(300);
+        $('.settings-bar-wrapper').slideToggle(300);
     });
 
     $('.settings-toggler-wrapper').hover(

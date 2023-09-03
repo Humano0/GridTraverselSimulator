@@ -25,47 +25,52 @@
             Clear
         </div>
     </nav>
+
     <div class="content-wrapper">
         <div class="settings-bar-wrapper">
-            <div class="input-outer-wrapper">
-                <div class="input-wrapper">
-                    <div class="input-div">
-                        <label for="rowInput">Row:</label>
-                        <input type="number" min="2" max="50">
+            <form class="grid-size-form">
+                <fieldset>
+                    <legend>Grid Layout Settings</legend>
+                    <div class="inputs-wrapper">
+                        <div>
+                            <label for="row">Rows:</label>
+                            <input type="number" name="rownumber" id="row" placeholder="2 - 50" min="2" max="50" required>
+                        </div>
+                        <div>
+                            <label for="column">Columns:</label>
+                            <input type="number" name="columnnumber" id="column" placeholder="2 - 50" min="2" max="50" required>
+                        </div>
                     </div>
-                    <div class="input-div">
-                        <label for="columnInput">Column:</label>
-                        <input type="number" min="2" max="50">
+                    <div class="apply-wrapper">
+                        <button type="submit">Apply</button>
                     </div>
+                </fieldset>
+            </form>
+            <form class="select-node-wrapper">
+                <legend>Node Options</legend>
+                <button class="start-node-selector" type="button">Start Node</button>
+                <button class="block-node-selector" type="button">Block Node</button>
+                <button class="end-node-selector" type="button">End Node</button>
+            </form>
+            <form class="algorithm-chooser-form">
+                <div class="algo-selector-wrapper">
+                    <label for="list-chooser">Select an algorithm:</label>
+                    <select class="algorithm-selector" value="" onchange="handleAlgorithmChange(event, this.value)">
+                        <option value="">-- algorithm --</option>
+                        <option value="option1">BFS</option>
+                        <option value="option2">DFS</option>
+                    </select>
                 </div>
-                <div class="button-div">
-                    <button>Apply</button>
+                <div class="simulate-wrapper">
+                    <button type="button">Simulate</button>
                 </div>
-            </div>
-
-            <div class="select-node-wrapper">
-                <button class="start-node-selector">Start Node</button>
-                <button class="block-node-selector">Block Node</button>
-                <button class="end-node-selector">End Node</button>
-            </div>
-
-            <div class="algorithm-selector-wrapper>
-                <label for="list-chooser">Select an algorithm:</label>
-                <select class="algorithm-selector" value="" onchange="handleAlgorithmChange(event, this.value)">
-                    <option value="">-- algorithm --</option>
-                    <option value="option1">BFS</option>
-                    <option value="option2">DFS</option>
-                </select>
-            </div>
-
-            <div class="simulate-wrapper">
-                SIMULATE
-            </div>
+            </form>
         </div>
         <div class="grid-layout-wrapper">
             .grid
         </div>
     </div>
+
     <nav class="footer">
         <div>
             .footer
@@ -74,6 +79,6 @@
 
     <script src="./libs/jquery-3.7.0.min.js"></script>
     <script src="./scripts/handleAlgorithmChange.js"></script>
-    <script src="./scripts/random.js"></script>
+    <script src="./scripts/settings_toggle.js"></script>
 </body>
 </html>
