@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <script src="./libs/jquery-3.7.0.min.js"></script>
     <link rel="stylesheet" href="./styles/cssreset.css">
     <link rel="stylesheet" href="./styles/index.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,300,0,-25" />
@@ -42,7 +43,7 @@
                         </div>
                     </div>
                     <div class="apply-wrapper">
-                        <button type="submit">Apply</button>
+                        <button type="button" class="size-apply">Apply</button>
                     </div>
                 </fieldset>
             </form>
@@ -55,19 +56,18 @@
             <form class="algorithm-chooser-form">
                 <div class="algo-selector-wrapper">
                     <label for="list-chooser">Select an algorithm:</label>
-                    <select class="algorithm-selector" value="" onchange="handleAlgorithmChange(event, this.value)">
+                    <select class="algorithm-selector" value="" id="list-chooser">
                         <option value="">-- algorithm --</option>
-                        <option value="option1">BFS</option>
-                        <option value="option2">DFS</option>
+                        <option value="bfs">BFS</option>
+                        <option value="dfs">DFS</option>
                     </select>
                 </div>
-                <div class="simulate-wrapper">
-                    <button type="button">Simulate</button>
-                </div>
             </form>
+            <div class="simulate-wrapper">
+                <button type="button">Simulate</button>
+            </div>
         </div>
         <div class="grid-layout-wrapper">
-            .grid
         </div>
     </div>
 
@@ -76,9 +76,7 @@
             .footer
         </div>
     </nav>
-
-    <script src="./libs/jquery-3.7.0.min.js"></script>
-    <script src="./scripts/handleAlgorithmChange.js"></script>
+    <script src="./scripts/set_variable.js"></script>
     <script src="./scripts/settings_toggle.js"></script>
 </body>
 </html>
