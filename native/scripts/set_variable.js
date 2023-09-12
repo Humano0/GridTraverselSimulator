@@ -8,7 +8,6 @@ function handleGridClick(event) {
     const nodeSelector = sessionStorage.getItem('node_type');
 
     const snode = sessionStorage.getItem('startnode');
-    const bnode = sessionStorage.getItem('blocknode');
     const enode = sessionStorage.getItem('endnode');
 
     const isStart = event.target.classList.contains("startingnode");
@@ -23,7 +22,7 @@ function handleGridClick(event) {
                     event.target.classList.add('startingnode');
                     sessionStorage.setItem('startnode', event.target.id);
                 } else if (isBlock || isEnd) {
-                    return 0;
+                    return;
                 } else {
                     let oldstartnode = document.querySelector('.startingnode');
                     oldstartnode.classList.remove('startingnode');
@@ -32,9 +31,15 @@ function handleGridClick(event) {
                 }
                 break;
             case 'block':
-                if(!bnode.includes(event.target.id) && !isStart && !isEnd) {
+                let existingBlockNodes = JSON.parse(sessionStorage.getItem('blocknode'));
+                if(!existingBlockNodes.includes(event.target.id) && !isStart && !isEnd) {
                     event.target.classList.add('blockingnode');
-                    sessionStorage.setItem('blocknode', event.target.id);
+                    existingBlockNodes.push(event.target.id);
+                    sessionStorage.setItem('blocknode', JSON.stringify(existingBlockNodes));
+                } else if(existingBlockNodes.includes(event.target.id)) {
+                    existingBlockNodes.splice(existingBlockNodes.indexOf(event.target.id), 1);
+                    event.target.classList.remove('blockingnode');
+                    sessionStorage.setItem('blocknode', JSON.stringify(existingBlockNodes));
                 }
                 break;
             case 'end':
@@ -106,8 +111,9 @@ function buttonClassChanger(buttonClass) {
     }
 }
 function defaultNodes() {
+    let arr = [""];
+    sessionStorage.setItem('blocknode', JSON.stringify(arr));
     sessionStorage.setItem('startnode', '0-0');
-    sessionStorage.setItem('blocknode', []);
     sessionStorage.setItem('endnode', '0-0');
 }
 
