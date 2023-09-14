@@ -210,11 +210,11 @@ button {
 }
 
 .startingnode {
-    background-color: white;
+    background-color: rgb(43, 255, 110);
 }
 
 .endingnode {
-    background-color: red;
+    background-color: rgb(181, 37, 37);
 }
 
 .blockingnode {

@@ -1,10 +1,9 @@
-function splitID(event) {
-    const id = event.target.id;
+function splitID (target) {
+    const id = target.id;
     const splittedID = id.split('-');
     return splittedID;
 }
-
-function handleGridClick(event) {
+function handleGridClick (event) {
     const nodeSelector = sessionStorage.getItem('node_type');
 
     const snode = sessionStorage.getItem('startnode');
@@ -14,45 +13,72 @@ function handleGridClick(event) {
     const isBlock = event.target.classList.contains("blockingnode");
     const isEnd = event.target.classList.contains("endingnode");
 
+    const grid = JSON.parse(sessionStorage.getItem('gridcells'));
+    /*
+        gridcells --> 0, 1, 2, 3
+            0 === blocked node
+            1 === open node
+            2 === start node
+            3 === end node
+    */
+    let idsplit = splitID(event.target);
+    let x = idsplit[0] - 1;
+    let y = idsplit[1] - 1;
     if(nodeSelector !== null && nodeSelector !== undefined){
         console.log(event.target.id, nodeSelector);
         switch(nodeSelector) {
             case 'start':
                 if(snode === '0-0' && !isBlock && !isEnd) {
+                    grid[x][y] = 2;
                     event.target.classList.add('startingnode');
                     sessionStorage.setItem('startnode', event.target.id);
+                    sessionStorage.setItem('gridcells', JSON.stringify(grid));
                 } else if (isBlock || isEnd) {
                     return;
                 } else {
+                    grid[x][y] = 2;
                     let oldstartnode = document.querySelector('.startingnode');
                     oldstartnode.classList.remove('startingnode');
+                    idsplit = splitID(oldstartnode);
+                    grid[idsplit[0] - 1][idsplit[1] - 1] = 1;
                     event.target.classList.add('startingnode');
                     sessionStorage.setItem('startnode', event.target.id);
+                    sessionStorage.setItem('gridcells', JSON.stringify(grid));
                 }
                 break;
             case 'block':
                 let existingBlockNodes = JSON.parse(sessionStorage.getItem('blocknode'));
                 if(!existingBlockNodes.includes(event.target.id) && !isStart && !isEnd) {
+                    grid[x][y] = 0;
                     event.target.classList.add('blockingnode');
                     existingBlockNodes.push(event.target.id);
                     sessionStorage.setItem('blocknode', JSON.stringify(existingBlockNodes));
+                    sessionStorage.setItem('gridcells', JSON.stringify(grid));
                 } else if(existingBlockNodes.includes(event.target.id)) {
+                    grid[x][y] = 1;
                     existingBlockNodes.splice(existingBlockNodes.indexOf(event.target.id), 1);
                     event.target.classList.remove('blockingnode');
                     sessionStorage.setItem('blocknode', JSON.stringify(existingBlockNodes));
+                    sessionStorage.setItem('gridcells', JSON.stringify(grid));
                 }
                 break;
             case 'end':
                 if(enode === '0-0' && !isStart && !isBlock) {
+                    grid[x][y] = 3;
                     event.target.classList.add('endingnode');
                     sessionStorage.setItem('endnode', event.target.id);
+                    sessionStorage.setItem('gridcells', JSON.stringify(grid));
                 } else if (isBlock || isStart) {
-                    return 0;
+                    return;
                 } else {
+                    grid[x][y] = 3;
                     let oldendnode = document.querySelector('.endingnode');
                     oldendnode.classList.remove('endingnode');
+                    idsplit = splitID(oldendnode);
+                    grid[idsplit[0] - 1][idsplit[1] - 1] = 1;
                     event.target.classList.add('endingnode');
                     sessionStorage.setItem('endnode', event.target.id);
+                    sessionStorage.setItem('gridcells', JSON.stringify(grid));
                 }
                 break;
             default:
@@ -65,7 +91,7 @@ function saveGridArray(rownum, colnum) {
     for(let i = 0; i < rownum; i++) {
         arr[i] = [];
         for(let j = 0; j < colnum; j++) {
-            arr[i][j] = "1";
+            arr[i][j] = 1;
         }
     }
     sessionStorage.setItem('gridcells', JSON.stringify(arr));
@@ -141,4 +167,22 @@ $(document).ready(function() {
         let selectedValue = $(this).val();
         sessionStorage.setItem("selected_algorithm", selectedValue);
     });
+
+    $('.simulate-button').click(function() {
+        const algo = sessionStorage.getItem('selected_algorithm');
+        const grid = sessionStorage.getItem('gridcells');
+        console.log(grid);
+        if(algo !== null && grid !== null) {
+            switch(algo) {
+                case 'bfs':
+                    //bfs();
+                    break;
+                case 'dfs':
+                    //dfs();
+                    break;
+            }
+        } else {
+            alert ("missing info");
+        }
+    })
 });
