@@ -1,5 +1,4 @@
-function splitID (target) {
-    const id = target.id;
+function splitID (id) {
     const splittedID = id.split('-');
     return splittedID;
 }
@@ -21,14 +20,13 @@ function handleGridClick (event) {
             2 === start node
             3 === end node
     */
-    let idsplit = splitID(event.target);
-    let x = idsplit[0] - 1;
-    let y = idsplit[1] - 1;
+    let idsplit = splitID(event.target.id);
+    let x = idsplit[0];
+    let y = idsplit[1];
     if(nodeSelector !== null && nodeSelector !== undefined){
-        console.log(event.target.id, nodeSelector);
         switch(nodeSelector) {
             case 'start':
-                if(snode === '0-0' && !isBlock && !isEnd) {
+                if(snode === 'o-o' && !isBlock && !isEnd) {
                     grid[x][y] = 2;
                     event.target.classList.add('startingnode');
                     sessionStorage.setItem('startnode', event.target.id);
@@ -39,8 +37,8 @@ function handleGridClick (event) {
                     grid[x][y] = 2;
                     let oldstartnode = document.querySelector('.startingnode');
                     oldstartnode.classList.remove('startingnode');
-                    idsplit = splitID(oldstartnode);
-                    grid[idsplit[0] - 1][idsplit[1] - 1] = 1;
+                    idsplit = splitID(oldstartnode.id);
+                    grid[idsplit[0]][idsplit[1]] = 1;
                     event.target.classList.add('startingnode');
                     sessionStorage.setItem('startnode', event.target.id);
                     sessionStorage.setItem('gridcells', JSON.stringify(grid));
@@ -63,7 +61,7 @@ function handleGridClick (event) {
                 }
                 break;
             case 'end':
-                if(enode === '0-0' && !isStart && !isBlock) {
+                if(enode === 'o-o' && !isStart && !isBlock) {
                     grid[x][y] = 3;
                     event.target.classList.add('endingnode');
                     sessionStorage.setItem('endnode', event.target.id);
@@ -74,8 +72,8 @@ function handleGridClick (event) {
                     grid[x][y] = 3;
                     let oldendnode = document.querySelector('.endingnode');
                     oldendnode.classList.remove('endingnode');
-                    idsplit = splitID(oldendnode);
-                    grid[idsplit[0] - 1][idsplit[1] - 1] = 1;
+                    idsplit = splitID(oldendnode.id);
+                    grid[idsplit[0]][idsplit[1]] = 1;
                     event.target.classList.add('endingnode');
                     sessionStorage.setItem('endnode', event.target.id);
                     sessionStorage.setItem('gridcells', JSON.stringify(grid));
@@ -100,8 +98,8 @@ function createGridLayout(rownum, colnum) {
     const gridLayoutWrapper = $('.grid-layout-wrapper');
     gridLayoutWrapper.empty();
 
-    for (let row = 1; row <= rownum; row++) {
-        for (let col = 1; col <= colnum; col++) {
+    for (let row = 0; row < rownum; row++) {
+        for (let col = 0; col < colnum; col++) {
             const gridCell = document.createElement('div');
             gridCell.classList.add('grid-cell');
             gridCell.id = `${row}-${col}`;
@@ -139,8 +137,93 @@ function buttonClassChanger(buttonClass) {
 function defaultNodes() {
     let arr = [""];
     sessionStorage.setItem('blocknode', JSON.stringify(arr));
-    sessionStorage.setItem('startnode', '0-0');
-    sessionStorage.setItem('endnode', '0-0');
+    sessionStorage.setItem('startnode', 'o-o');
+    sessionStorage.setItem('endnode', 'o-o');
+}
+
+function createAdjacencyList(grid) {
+	const adjacencyList = {};
+
+	// Define directions (up, down, left, right)
+	const directions = [[-1, 0], [1, 0], [0, -1], [0, 1]];
+
+	for (let row = 0; row < grid.length; row++) {
+	  	for (let col = 0; col < grid[row].length; col++) {
+			if (grid[row][col] !== 0) {
+				const node = `${row}-${col}`;
+				adjacencyList[node] = [];
+
+				// Check adjacent cells
+				for (const [dx, dy] of directions) {
+					const newRow = row + dx;
+					const newCol = col + dy;
+
+					// Check if the adjacent cell is within bounds and traversable
+					if (
+						newRow >= 0 &&
+						newRow < grid.length &&
+						newCol >= 0 &&
+						newCol < grid[newRow].length &&
+						grid[newRow][newCol] !== 0
+					) {
+						adjacencyList[node].push(`${newRow}-${newCol}`);
+					}
+				}
+			}
+	  	}
+	}
+	return adjacencyList;
+}
+function createVisitedArray(rownum, colnum) {
+	let arr = [];
+    for(let i = 0; i < rownum; i++) {
+        arr[i] = [];
+        for(let j = 0; j < colnum; j++) {
+            arr[i][j] = false;
+        }
+    }
+	return arr;
+}
+function createPreviousArray(rownum, colnum) {
+	let arr = [];
+    for(let i = 0; i < rownum; i++) {
+        arr[i] = [];
+        for(let j = 0; j < colnum; j++) {
+            arr[i][j] = null;
+        }
+    }
+	return arr;
+}
+
+function solveBFS (startnode, adjacencyList, number_of_nodes, rownumber, columnnumber) {
+    let queue = [];
+    queue.push(startnode);
+
+	// array to mark visited nodes
+    let visited = createVisitedArray(rownumber, columnnumber);
+	let id = splitID(startnode);
+	visited[id[0]][id[1]] = true;
+
+	// array to hold the path to end node
+	let prev = createPreviousArray(rownumber, columnnumber);
+
+	while(queue.length) {
+		let node = queue.shift();
+		let neighbours = adjacencyList[node];
+
+		for(let next of neighbours) {
+			console.log(next);
+		}
+	}
+}
+
+// startnode = id of starting node
+// endnode = id of ending node
+function bfs (grid, startnode, endnode) {
+    const number_of_nodes = grid.length * grid[0].length;
+	const adjacencyList = createAdjacencyList(grid);
+
+    const prev = solveBFS(startnode, adjacencyList, number_of_nodes, grid.length, grid[0].length);
 }
 
 $(document).ready(function() {
@@ -170,12 +253,13 @@ $(document).ready(function() {
 
     $('.simulate-button').click(function() {
         const algo = sessionStorage.getItem('selected_algorithm');
-        const grid = sessionStorage.getItem('gridcells');
-        console.log(grid);
-        if(algo !== null && grid !== null) {
+        const grid = JSON.parse(sessionStorage.getItem('gridcells'));
+        const startNode = sessionStorage.getItem('startnode');
+        const endNode = sessionStorage.getItem('endnode');
+        if(algo !== null && grid !== null && startNode !== 'o-o' && endNode !== 'o-o' ) {
             switch(algo) {
                 case 'bfs':
-                    //bfs();
+                    bfs(grid, startNode, endNode);
                     break;
                 case 'dfs':
                     //dfs();
