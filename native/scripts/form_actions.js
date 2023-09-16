@@ -196,14 +196,10 @@ function createPreviousArray(rownum, colnum) {
 }
 
 function lightThePath(path) {
-
 	for(let x = 1; x < path.length - 1; x++) {
-		let pathElement = document.querySelector(`.grid-cell#${path[x]}`);
-		if(pathElement) {
-			pathElement.classList.add('path-elem');
-		}
+		let pathElement = document.body.querySelector(`#${path[x]}`);
+		pathElement.classList.add('path-elem');
 	}
-	console.log(path);
 }
 
 function solveBFS (startnode, adjacencyList, number_of_nodes, rownumber, columnnumber) {
@@ -241,9 +237,6 @@ function solveBFS (startnode, adjacencyList, number_of_nodes, rownumber, columnn
 function reconstructPath (startnode, endnode, prev) {
 	let path = [];
 	let at = splitID(endnode);
-	console.log(endnode);
-	console.log(at);
-	console.log(prev);
 
 	// save the path to path array
 	for(let pos = endnode; pos != null; pos = prev[at[0]][at[1]]) {
@@ -264,9 +257,9 @@ function reconstructPath (startnode, endnode, prev) {
 function bfs (grid, startnode, endnode) {
     const number_of_nodes = grid.length * grid[0].length;
 	const adjacencyList = createAdjacencyList(grid);
-
     const prev = solveBFS(startnode, adjacencyList, number_of_nodes, grid.length, grid[0].length);
-	reconstructPath(startnode, endnode, prev);
+
+	return reconstructPath(startnode, endnode, prev);
 }
 
 $(document).ready(function() {
