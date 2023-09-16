@@ -1,5 +1,5 @@
 function splitID (id) {
-    const splittedID = id.split('-');
+	const splittedID = id.slice(1).split('-');
     return splittedID;
 }
 function handleGridClick (event) {
@@ -26,7 +26,7 @@ function handleGridClick (event) {
     if(nodeSelector !== null && nodeSelector !== undefined){
         switch(nodeSelector) {
             case 'start':
-                if(snode === 'o-o' && !isBlock && !isEnd) {
+                if(snode === 'io-o' && !isBlock && !isEnd) {
                     grid[x][y] = 2;
                     event.target.classList.add('startingnode');
                     sessionStorage.setItem('startnode', event.target.id);
@@ -61,7 +61,7 @@ function handleGridClick (event) {
                 }
                 break;
             case 'end':
-                if(enode === 'o-o' && !isStart && !isBlock) {
+                if(enode === 'io-o' && !isStart && !isBlock) {
                     grid[x][y] = 3;
                     event.target.classList.add('endingnode');
                     sessionStorage.setItem('endnode', event.target.id);
@@ -102,7 +102,7 @@ function createGridLayout(rownum, colnum) {
         for (let col = 0; col < colnum; col++) {
             const gridCell = document.createElement('div');
             gridCell.classList.add('grid-cell');
-            gridCell.id = `${row}-${col}`;
+            gridCell.id = `i${row}-${col}`;
             gridCell.addEventListener('click', handleGridClick);
             gridLayoutWrapper.append(gridCell);
         }
@@ -137,8 +137,8 @@ function buttonClassChanger(buttonClass) {
 function defaultNodes() {
     let arr = [""];
     sessionStorage.setItem('blocknode', JSON.stringify(arr));
-    sessionStorage.setItem('startnode', 'o-o');
-    sessionStorage.setItem('endnode', 'o-o');
+    sessionStorage.setItem('startnode', 'io-o');
+    sessionStorage.setItem('endnode', 'io-o');
 }
 
 function createAdjacencyList(grid) {
@@ -150,7 +150,7 @@ function createAdjacencyList(grid) {
 	for (let row = 0; row < grid.length; row++) {
 	  	for (let col = 0; col < grid[row].length; col++) {
 			if (grid[row][col] !== 0) {
-				const node = `${row}-${col}`;
+				const node = `i${row}-${col}`;
 				adjacencyList[node] = [];
 
 				// Check adjacent cells
@@ -166,7 +166,7 @@ function createAdjacencyList(grid) {
 						newCol < grid[newRow].length &&
 						grid[newRow][newCol] !== 0
 					) {
-						adjacencyList[node].push(`${newRow}-${newCol}`);
+						adjacencyList[node].push(`i${newRow}-${newCol}`);
 					}
 				}
 			}
