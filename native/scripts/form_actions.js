@@ -202,7 +202,7 @@ function lightThePath(path) {
 	}
 }
 
-function solveBFS (startnode, adjacencyList, number_of_nodes, rownumber, columnnumber) {
+function solveBFS (startnode, adjacencyList, rownumber, columnnumber) {
 	// queue that holds id's of the grid elements
     let queue = [];
     queue.push(startnode);
@@ -257,7 +257,7 @@ function reconstructPath (startnode, endnode, prev) {
 function bfs (grid, startnode, endnode) {
     const number_of_nodes = grid.length * grid[0].length;
 	const adjacencyList = createAdjacencyList(grid);
-    const prev = solveBFS(startnode, adjacencyList, number_of_nodes, grid.length, grid[0].length);
+    const prev = solveBFS(startnode, adjacencyList, grid.length, grid[0].length);
 
 	return reconstructPath(startnode, endnode, prev);
 }
