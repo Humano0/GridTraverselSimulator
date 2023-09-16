@@ -220,3 +220,7 @@ button {
 .blockingnode {
     background-color: #000000;
 }
+
+.path-elem {
+    background-color: white;
+}

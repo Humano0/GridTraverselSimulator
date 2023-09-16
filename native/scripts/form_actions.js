@@ -195,25 +195,67 @@ function createPreviousArray(rownum, colnum) {
 	return arr;
 }
 
+function lightThePath(path) {
+
+	for(let x = 1; x < path.length - 1; x++) {
+		let pathElement = document.querySelector(`.grid-cell#${path[x]}`);
+		if(pathElement) {
+			pathElement.classList.add('path-elem');
+		}
+	}
+	console.log(path);
+}
+
 function solveBFS (startnode, adjacencyList, number_of_nodes, rownumber, columnnumber) {
+	// queue that holds id's of the grid elements
     let queue = [];
     queue.push(startnode);
 
-	// array to mark visited nodes
+	// two dimensional array to mark visited nodes
     let visited = createVisitedArray(rownumber, columnnumber);
 	let id = splitID(startnode);
 	visited[id[0]][id[1]] = true;
 
-	// array to hold the path to end node
+	// two dimensional array to hold the path to end node
 	let prev = createPreviousArray(rownumber, columnnumber);
 
 	while(queue.length) {
 		let node = queue.shift();
 		let neighbours = adjacencyList[node];
 
+		// next == id of neighbouring element
 		for(let next of neighbours) {
-			console.log(next);
+			let id = splitID(next);
+			if(!visited[id[0]][id[1]]) {
+				queue.push(next);
+				visited[id[0]][id[1]] = true;
+				prev[id[0]][id[1]] = node;
+			}
 		}
+	}
+	return prev;
+}
+
+// startnode && endnode == id of the elements
+// prev == two dimensional array with ids
+function reconstructPath (startnode, endnode, prev) {
+	let path = [];
+	let at = splitID(endnode);
+	console.log(endnode);
+	console.log(at);
+	console.log(prev);
+
+	// save the path to path array
+	for(let pos = endnode; pos != null; pos = prev[at[0]][at[1]]) {
+		at = splitID(pos);
+		path.push(pos);
+	}
+	path.reverse();
+
+	if(path[0] == startnode) {
+		lightThePath(path);
+	} else {
+		console.log('no path found');
 	}
 }
 
@@ -224,6 +266,7 @@ function bfs (grid, startnode, endnode) {
 	const adjacencyList = createAdjacencyList(grid);
 
     const prev = solveBFS(startnode, adjacencyList, number_of_nodes, grid.length, grid[0].length);
+	reconstructPath(startnode, endnode, prev);
 }
 
 $(document).ready(function() {
