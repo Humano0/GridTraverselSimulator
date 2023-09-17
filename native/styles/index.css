@@ -30,6 +30,8 @@ form input:invalid {
 form input:valid {
     outline-color: green;
 }
+form input:disabled {
+}
 
 fieldset {
     display: flex;
@@ -219,6 +221,16 @@ button {
 
 .blockingnode {
     background-color: #000000;
+}
+
+.clear-wrapper {
+    margin-left: 1vw;
+}
+
+.visited-node {
+    opacity: 0.1; /* Start with a low opacity */
+    background-color: wheat;
+    transition: opacity 0.5s; /* Add a transition for a smooth effect */
 }
 
 .path-elem {

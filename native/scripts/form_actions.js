@@ -194,47 +194,69 @@ function createPreviousArray(rownum, colnum) {
     }
 	return arr;
 }
-
-function lightThePath(path) {
-	for(let x = 1; x < path.length - 1; x++) {
-		let pathElement = document.body.querySelector(`#${path[x]}`);
-		pathElement.classList.add('path-elem');
-	}
+function delay(ms) {
+	return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-function solveBFS (startnode, adjacencyList, rownumber, columnnumber) {
-	// queue that holds id's of the grid elements
+
+/*
+    *******BFS*******
+    *******BFS*******
+    *******BFS*******
+    *******BFS*******
+    *******BFS*******
+*/
+async function lightThePath(path) {
+    for (let x = 1; x < path.length - 1; x++) {
+		await delay(50);
+        let pathElement = document.body.querySelector(`#${path[x]}`);
+		pathElement.classList.remove('visited-node');
+        pathElement.classList.add('path-elem');
+    }
+}
+async function solveBFS(startnode, adjacencyList, rownumber, columnnumber, endnode) {
+    let breaker = false;
     let queue = [];
     queue.push(startnode);
 
-	// two dimensional array to mark visited nodes
     let visited = createVisitedArray(rownumber, columnnumber);
-	let id = splitID(startnode);
-	visited[id[0]][id[1]] = true;
+    let id = splitID(startnode);
+    visited[id[0]][id[1]] = true;
 
-	// two dimensional array to hold the path to end node
-	let prev = createPreviousArray(rownumber, columnnumber);
+    let prev = createPreviousArray(rownumber, columnnumber);
 
-	while(queue.length) {
-		let node = queue.shift();
-		let neighbours = adjacencyList[node];
-
-		// next == id of neighbouring element
-		for(let next of neighbours) {
-			let id = splitID(next);
-			if(!visited[id[0]][id[1]]) {
-				queue.push(next);
-				visited[id[0]][id[1]] = true;
-				prev[id[0]][id[1]] = node;
-			}
-		}
-	}
-	return prev;
+    while (queue.length) {
+        let node = queue.shift();
+        let neighbours = adjacencyList[node];
+        for (let next of neighbours) {
+            let id = splitID(next);
+            let visitedElem = document.querySelector(`#${next}`);
+            if (visitedElem.id !== startnode && visitedElem.id !== endnode) {
+                visitedElem.classList.add('visited-node');
+                // Delay for a smoother effect
+                await delay(10);
+                // Increment the opacity (e.g., by 0.1 each time)
+                visitedElem.style.opacity = parseFloat(visitedElem.style.opacity) + 0.1;
+            }
+            if (!visited[id[0]][id[1]]) {
+                queue.push(next);
+                visited[id[0]][id[1]] = true;
+                prev[id[0]][id[1]] = node;
+            }
+            if (next == endnode) {
+                breaker = true;
+                break;
+            }
+        }
+        if (breaker) {
+            break;
+        }
+    }
+    return prev;
 }
-
 // startnode && endnode == id of the elements
 // prev == two dimensional array with ids
-function reconstructPath (startnode, endnode, prev) {
+async function reconstructPath (startnode, endnode, prev) {
 	let path = [];
 	let at = splitID(endnode);
 
@@ -251,15 +273,58 @@ function reconstructPath (startnode, endnode, prev) {
 		console.log('no path found');
 	}
 }
-
 // startnode = id of starting node
 // endnode = id of ending node
-function bfs (grid, startnode, endnode) {
-    const number_of_nodes = grid.length * grid[0].length;
+async function bfs (grid, startnode, endnode) {
 	const adjacencyList = createAdjacencyList(grid);
-    const prev = solveBFS(startnode, adjacencyList, grid.length, grid[0].length);
+    const prev = await solveBFS(startnode, adjacencyList, grid.length, grid[0].length, endnode);
 
-	return reconstructPath(startnode, endnode, prev);
+	await reconstructPath(startnode, endnode, prev);
+}
+
+
+/*
+    *******DFS*******
+    *******DFS*******
+    *******DFS*******
+    *******DFS*******
+    *******DFS*******
+*/
+async function dfs (grid, startingnode, endnode) {
+    const number_of_nodes = grid.length * grid[0].length;
+    const adjacencyList = createAdjacencyList(grid);
+    let visited = createVisitedArray(grid.length, grid[0].length);
+}
+
+async function simulateButton() {
+    const algo = sessionStorage.getItem('selected_algorithm');
+    const grid = JSON.parse(sessionStorage.getItem('gridcells'));
+    const startNode = sessionStorage.getItem('startnode');
+    const endNode = sessionStorage.getItem('endnode');
+
+    if(algo !== null && grid !== null && startNode !== 'o-o' && endNode !== 'o-o' ) {
+        switch(algo) {
+            case 'bfs':
+                bfs(grid, startNode, endNode);
+                break;
+            case 'dfs':
+                //dfs();
+                break;
+        }
+    } else {
+        alert ("missing info");
+    }
+}
+
+function clearGrid() {
+    const gridElements = document.querySelectorAll('.grid-cell');
+    gridElements.forEach(element => {
+        if(element.classList.contains('path-elem')) {
+            element.classList.remove('path-elem');
+        } else if (element.classList.contains('visited-node')) {
+            element.classList.remove('visited-node');
+        }
+    });
 }
 
 $(document).ready(function() {
@@ -288,21 +353,10 @@ $(document).ready(function() {
     });
 
     $('.simulate-button').click(function() {
-        const algo = sessionStorage.getItem('selected_algorithm');
-        const grid = JSON.parse(sessionStorage.getItem('gridcells'));
-        const startNode = sessionStorage.getItem('startnode');
-        const endNode = sessionStorage.getItem('endnode');
-        if(algo !== null && grid !== null && startNode !== 'o-o' && endNode !== 'o-o' ) {
-            switch(algo) {
-                case 'bfs':
-                    bfs(grid, startNode, endNode);
-                    break;
-                case 'dfs':
-                    //dfs();
-                    break;
-            }
-        } else {
-            alert ("missing info");
-        }
-    })
+        simulateButton();
+    });
+
+	$('.clear-wrapper').click(function() {
+		clearGrid();
+	})
 });
