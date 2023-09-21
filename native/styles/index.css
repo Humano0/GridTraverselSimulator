@@ -30,8 +30,6 @@ form input:invalid {
 form input:valid {
     outline-color: green;
 }
-form input:disabled {
-}
 
 fieldset {
     display: flex;
