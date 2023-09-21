@@ -371,19 +371,16 @@ async function dfs(grid, startnode, endnode) {
     await reconstructPathDFS(startnode, endnode, prev);
 }
 
-
 async function simulateButton() {
-    if(sessionStorage.getItem('simulated')) {
-        clearGrid();
-    }
-    disableForm($('button, input, select'));
-
     const algo = sessionStorage.getItem('selected_algorithm');
     const grid = JSON.parse(sessionStorage.getItem('gridcells'));
     const startNode = sessionStorage.getItem('startnode');
     const endNode = sessionStorage.getItem('endnode');
-
-    if(algo !== null && grid !== null && startNode !== 'o-o' && endNode !== 'o-o' ) {
+    if(sessionStorage.getItem('simulated')) {
+        clearGrid();
+    }
+    disableForm($('button, input, select'));
+    if(algo !== null && grid !== null && startNode !== 'io-o' && endNode !== 'io-o' ) {
         switch(algo) {
             case 'bfs':
                 await bfs(grid, startNode, endNode);
@@ -398,12 +395,12 @@ async function simulateButton() {
     enableForm($('button, input, select'));
 }
 
-function clearGrid() {
+async function clearGrid() {
     const gridElements = document.querySelectorAll('.grid-cell');
     const checkboxes = document.querySelectorAll('input[type="checkbox"]');
     const grid = JSON.parse(sessionStorage.getItem('gridcells'));
 
-
+    sessionStorage.setItem('simulated', false);
 
     gridElements.forEach(element => {
         if (element.classList.contains('path-elem') || element.classList.contains('visited-node')) {
