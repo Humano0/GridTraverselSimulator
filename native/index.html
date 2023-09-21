@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="./styles/cssreset.css">
     <link rel="stylesheet" href="./styles/index.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,300,0,-25" />
+    <link rel="icon" type="image/x-icon" href="./grid_favicon.png">
 </head>
 <body>
     <nav class="header">
@@ -30,7 +31,7 @@
                 <fieldset>
                     <legend>Grid Layout Settings</legend>
                     <div class="inputs-wrapper">
-                        <div>
+                        <div class="input-raw">
                             <label for="row">Rows:</label>
                             <input type="number" name="rownumber" id="row" placeholder="2 - 50" min="2" max="50" required>
                         </div>
@@ -56,12 +57,21 @@
                     <select class="algorithm-selector" value="" id="list-chooser">
                         <option value="">-- algorithm --</option>
                         <option value="bfs">BFS</option>
-                        <option value="dfs">DFS</option>
+                        <!-- <option value="dfs">DFS</option> -->
                     </select>
                 </div>
             </form>
             <div class="simulate-wrapper">
                 <button type="button" class="simulate-button">Simulate</button>
+            </div>
+            <div class="clear-wrapper">
+                <fieldset>
+                    <legend>Reset Options</legend>
+                    <label><input type="checkbox" name="option1" value="snode">Starting Node</label>
+                    <label><input type="checkbox" name="option1" value="bnode">Block Nodes</label>
+                    <label><input type="checkbox" name="option1" value="enode">Ending Node</label>
+                    <button class="clear-grid-button">Reset</button>
+                </fieldset>
             </div>
         </div>
 
@@ -70,9 +80,7 @@
     </div>
 
     <nav class="footer">
-        <div class="clear-wrapper">
-            <button class="clear-grid-button">Reset</button>
-        </div>
+        
     </nav>
 
     <script src="./scripts/refreshActions.js"></script>

@@ -2,7 +2,11 @@ function splitID (id) {
 	const splittedID = id.slice(1).split('-');
     return splittedID;
 }
-function handleGridClick (event) {
+function delay(ms) {
+	return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function handleGridClick (event) {
     const nodeSelector = sessionStorage.getItem('node_type');
 
     const snode = sessionStorage.getItem('startnode');
@@ -23,6 +27,9 @@ function handleGridClick (event) {
     let idsplit = splitID(event.target.id);
     let x = idsplit[0];
     let y = idsplit[1];
+    if(sessionStorage.getItem('simulated')) {
+        clearGrid();
+    }
     if(nodeSelector !== null && nodeSelector !== undefined){
         switch(nodeSelector) {
             case 'start':
@@ -84,6 +91,7 @@ function handleGridClick (event) {
         }
     }
 }
+
 function saveGridArray(rownum, colnum) {
     let arr = [];
     for(let i = 0; i < rownum; i++) {
@@ -93,27 +101,6 @@ function saveGridArray(rownum, colnum) {
         }
     }
     sessionStorage.setItem('gridcells', JSON.stringify(arr));
-}
-function createGridLayout(rownum, colnum) {
-    const gridLayoutWrapper = $('.grid-layout-wrapper');
-    gridLayoutWrapper.empty();
-
-    for (let row = 0; row < rownum; row++) {
-        for (let col = 0; col < colnum; col++) {
-            const gridCell = document.createElement('div');
-            gridCell.classList.add('grid-cell');
-            gridCell.id = `i${row}-${col}`;
-            gridCell.addEventListener('click', handleGridClick);
-            gridLayoutWrapper.append(gridCell);
-        }
-    }
-
-    gridLayoutWrapper.css({
-        'display': 'grid',
-        'grid-template-rows': `repeat(${rownum}, 1fr)`,
-        'grid-template-columns': `repeat(${colnum}, 1fr)`,
-        'gap': '1px'
-    })
 }
 function setRowAndCol(rownum, colnum) {
     sessionStorage.setItem('row_number', rownum);
@@ -141,6 +128,27 @@ function defaultNodes() {
     sessionStorage.setItem('endnode', 'io-o');
 }
 
+function createGridLayout(rownum, colnum) {
+    const gridLayoutWrapper = $('.grid-layout-wrapper');
+    gridLayoutWrapper.empty();
+
+    for (let row = 0; row < rownum; row++) {
+        for (let col = 0; col < colnum; col++) {
+            const gridCell = document.createElement('div');
+            gridCell.classList.add('grid-cell');
+            gridCell.id = `i${row}-${col}`;
+            gridCell.addEventListener('click', handleGridClick);
+            gridLayoutWrapper.append(gridCell);
+        }
+    }
+
+    gridLayoutWrapper.css({
+        'display': 'grid',
+        'grid-template-rows': `repeat(${rownum}, 1fr)`,
+        'grid-template-columns': `repeat(${colnum}, 1fr)`,
+        'gap': '1px'
+    })
+}
 function createAdjacencyList(grid) {
 	const adjacencyList = {};
 
@@ -194,10 +202,22 @@ function createPreviousArray(rownum, colnum) {
     }
 	return arr;
 }
-function delay(ms) {
-	return new Promise(resolve => setTimeout(resolve, ms));
+
+function disableForm(formElements) {
+    $(formElements).prop('disabled', true);
+}
+function enableForm(formElements) {
+    $(formElements).prop('disabled', false);
 }
 
+async function lightThePath(path) {
+    for (let x = 1; x < path.length - 1; x++) {
+		await delay(25);
+        let pathElement = document.body.querySelector(`#${path[x]}`);
+		pathElement.classList.remove('visited-node');
+        pathElement.classList.add('path-elem');
+    }
+}
 
 /*
     *******BFS*******
@@ -206,14 +226,6 @@ function delay(ms) {
     *******BFS*******
     *******BFS*******
 */
-async function lightThePath(path) {
-    for (let x = 1; x < path.length - 1; x++) {
-		await delay(50);
-        let pathElement = document.body.querySelector(`#${path[x]}`);
-		pathElement.classList.remove('visited-node');
-        pathElement.classList.add('path-elem');
-    }
-}
 async function solveBFS(startnode, adjacencyList, rownumber, columnnumber, endnode) {
     let breaker = false;
     let queue = [];
@@ -234,7 +246,7 @@ async function solveBFS(startnode, adjacencyList, rownumber, columnnumber, endno
             if (visitedElem.id !== startnode && visitedElem.id !== endnode) {
                 visitedElem.classList.add('visited-node');
                 // Delay for a smoother effect
-                await delay(10);
+                await delay(5);
                 // Increment the opacity (e.g., by 0.1 each time)
                 visitedElem.style.opacity = parseFloat(visitedElem.style.opacity) + 0.1;
             }
@@ -256,7 +268,7 @@ async function solveBFS(startnode, adjacencyList, rownumber, columnnumber, endno
 }
 // startnode && endnode == id of the elements
 // prev == two dimensional array with ids
-async function reconstructPath (startnode, endnode, prev) {
+async function reconstructPathBFS (startnode, endnode, prev) {
 	let path = [];
 	let at = splitID(endnode);
 
@@ -268,7 +280,7 @@ async function reconstructPath (startnode, endnode, prev) {
 	path.reverse();
 
 	if(path[0] == startnode) {
-		lightThePath(path);
+		await lightThePath(path);
 	} else {
 		console.log('no path found');
 	}
@@ -279,7 +291,7 @@ async function bfs (grid, startnode, endnode) {
 	const adjacencyList = createAdjacencyList(grid);
     const prev = await solveBFS(startnode, adjacencyList, grid.length, grid[0].length, endnode);
 
-	await reconstructPath(startnode, endnode, prev);
+	await reconstructPathBFS(startnode, endnode, prev);
 }
 
 
@@ -290,13 +302,82 @@ async function bfs (grid, startnode, endnode) {
     *******DFS*******
     *******DFS*******
 */
-async function dfs (grid, startingnode, endnode) {
-    const number_of_nodes = grid.length * grid[0].length;
+// DFS broken
+async function solveDFS(startnode, endnode, adjacencyList, visited, rownumber, columnnumber, ) {
+    let stack = [];
+    let breaker = false;
+    let id = splitID(startnode);
+    stack.push(startnode);
+    visited[id[0]][id[1]] = true;
+    let prev = createPreviousArray(rownumber, columnnumber);
+
+    while(stack.length) {
+        let node = stack.pop();
+        const neighbors = adjacencyList[node];
+        if(neighbors != null) {
+            for(let next of neighbors) {
+                console.log(next);
+                let nextid = splitID(next);
+                let visitedElem = document.querySelector(`#${next}`);
+                if (visitedElem.id !== startnode && visitedElem.id !== endnode) {
+                    visitedElem.classList.add('visited-node');
+                    // Delay for a smoother effect
+                    await delay(10);
+                    // Increment the opacity (e.g., by 0.1 each time)
+                    visitedElem.style.opacity = parseFloat(visitedElem.style.opacity) + 0.1;
+                }
+                if(!visited[nextid[0]][nextid[1]]) {
+                    stack.push(next);
+                    visited[nextid[0]][nextid[1]] = true;
+                    prev[nextid[0]][nextid[1]] = node;
+                }
+                if(next === endnode) {
+                    prev[nextid[0]][nextid[1]] = node;
+                    breaker = true;
+                    break;
+                }
+            }
+        }
+        if(breaker) {
+            break;
+        }
+    }
+    return prev;
+}
+async function reconstructPathDFS(startnode, endnode, prev, lightElementCallback) {
+    let path = [];
+    let at = splitID(endnode);
+
+    for (let pos = endnode; pos != null; pos = prev[at[0]][at[1]]) {
+        at = splitID(pos);
+        path.push(pos);
+    }
+    path.reverse();
+
+    if (path[0] == startnode) {
+        await lightThePath(path);
+    } else {
+        console.log('no path found');
+    }
+}
+async function dfs(grid, startnode, endnode) {
+    const rownumber = grid.length;
+    const columnnumber = grid[0].length;
     const adjacencyList = createAdjacencyList(grid);
-    let visited = createVisitedArray(grid.length, grid[0].length);
+    let visited = createVisitedArray(rownumber, columnnumber);
+
+    const prev = await solveDFS(startnode, endnode, adjacencyList, visited, rownumber, columnnumber);
+    console.log(prev);
+    await reconstructPathDFS(startnode, endnode, prev);
 }
 
+
 async function simulateButton() {
+    if(sessionStorage.getItem('simulated')) {
+        clearGrid();
+    }
+    disableForm($('button, input, select'));
+
     const algo = sessionStorage.getItem('selected_algorithm');
     const grid = JSON.parse(sessionStorage.getItem('gridcells'));
     const startNode = sessionStorage.getItem('startnode');
@@ -305,26 +386,51 @@ async function simulateButton() {
     if(algo !== null && grid !== null && startNode !== 'o-o' && endNode !== 'o-o' ) {
         switch(algo) {
             case 'bfs':
-                bfs(grid, startNode, endNode);
+                await bfs(grid, startNode, endNode);
                 break;
             case 'dfs':
-                //dfs();
+                await dfs(grid, startNode, endNode);
                 break;
         }
     } else {
         alert ("missing info");
     }
+    enableForm($('button, input, select'));
 }
 
 function clearGrid() {
     const gridElements = document.querySelectorAll('.grid-cell');
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    const grid = JSON.parse(sessionStorage.getItem('gridcells'));
+
+
+
     gridElements.forEach(element => {
-        if(element.classList.contains('path-elem')) {
-            element.classList.remove('path-elem');
-        } else if (element.classList.contains('visited-node')) {
-            element.classList.remove('visited-node');
+        if (element.classList.contains('path-elem') || element.classList.contains('visited-node')) {
+            element.classList.remove('path-elem', 'visited-node');
         }
+        let id = splitID(element.id);
+        checkboxes.forEach(checkbox => {
+            if (checkbox.checked) {
+                const value = checkbox.value;
+                if (value === 'snode' && element.classList.contains('startingnode')) {
+                    element.classList.remove('startingnode');
+                    sessionStorage.setItem('startnode', 'io-o');
+                    grid[id[0]][id[1]] = 1;
+                } else if (value === 'bnode' && element.classList.contains('blockingnode')) {
+                    element.classList.remove('blockingnode');
+                    let arr = [""];
+                    sessionStorage.setItem('blocknode', JSON.stringify(arr));
+                    grid[id[0]][id[1]] = 1;
+                } else if (value === 'enode' && element.classList.contains('endingnode')) {
+                    element.classList.remove('endingnode');
+                    sessionStorage.setItem('endnode', 'io-o');
+                    grid[id[0]][id[1]] = 1;
+                }
+            }
+        });
     });
+    sessionStorage.setItem('gridcells', JSON.stringify(grid));
 }
 
 $(document).ready(function() {
@@ -354,9 +460,10 @@ $(document).ready(function() {
 
     $('.simulate-button').click(function() {
         simulateButton();
+        sessionStorage.setItem('simulated', true);
     });
 
-	$('.clear-wrapper').click(function() {
+	$('.clear-grid-button').click(function() {
 		clearGrid();
 	})
 });
