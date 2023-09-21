@@ -28,7 +28,7 @@ async function handleGridClick (event) {
     let x = idsplit[0];
     let y = idsplit[1];
     if(sessionStorage.getItem('simulated')) {
-        clearGrid();
+        clear();
     }
     if(nodeSelector !== null && nodeSelector !== undefined){
         switch(nodeSelector) {
