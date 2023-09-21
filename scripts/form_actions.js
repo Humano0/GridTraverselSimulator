@@ -371,13 +371,22 @@ async function dfs(grid, startnode, endnode) {
     await reconstructPathDFS(startnode, endnode, prev);
 }
 
+function clear() {
+    const gridElements = document.querySelectorAll('.grid-cell');
+    gridElements.forEach((element) => {
+        if (element.classList.contains('path-elem') || element.classList.contains('visited-node')) {
+            element.classList.remove('path-elem', 'visited-node');
+        }
+    })
+}
+
 async function simulateButton() {
     const algo = sessionStorage.getItem('selected_algorithm');
     const grid = JSON.parse(sessionStorage.getItem('gridcells'));
     const startNode = sessionStorage.getItem('startnode');
     const endNode = sessionStorage.getItem('endnode');
     if(sessionStorage.getItem('simulated')) {
-        clearGrid();
+        clear();
     }
     disableForm($('button, input, select'));
     if(algo !== null && grid !== null && startNode !== 'io-o' && endNode !== 'io-o' ) {
