@@ -478,23 +478,28 @@ function isValidValue(value) {
     return !isNaN(value) && value >= 2 && value <= 50;
 }
 
+function sizeApply() {
+    const rowNumberValue = $('#row').val();
+    const columnNumberValue = $('#column').val();
+
+    if (!isValidValue(rowNumberValue) || !isValidValue(columnNumberValue)) {
+        alert('Please enter valid values between 2 and 50 for both rows and columns.');
+        return;
+    } else {
+        setRowAndCol(rowNumberValue, columnNumberValue);
+        defaultNodes();
+
+        const rownum = sessionStorage.getItem('row_number');
+        const colnum = sessionStorage.getItem('column_number');
+
+        saveGridArray(rownum, colnum);
+        createGridLayout(rownum, colnum);
+    }
+}
+
 $(document).ready(function() {
     $('.size-apply').click(function() {
-        const rowNumberValue = $('#row').val();
-        const columnNumberValue = $('#column').val();
-
-        if (!isValidValue(rowNumberValue) || !isValidValue(columnNumberValue)) {
-            alert('Please enter valid values between 2 and 50 for both rows and columns.');
-        } else {
-            setRowAndCol(rowNumberValue, columnNumberValue);
-            defaultNodes();
-
-            const rownum = sessionStorage.getItem('row_number');
-            const colnum = sessionStorage.getItem('column_number');
-
-            saveGridArray(rownum, colnum);
-            createGridLayout(rownum, colnum);
-        }
+        sizeApply();
     });
 
     $('.start-node-selector, .block-node-selector, .end-node-selector').click(function() {
