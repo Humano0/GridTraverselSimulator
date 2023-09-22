@@ -485,17 +485,16 @@ $(document).ready(function() {
 
         if (!isValidValue(rowNumberValue) || !isValidValue(columnNumberValue)) {
             alert('Please enter valid values between 2 and 50 for both rows and columns.');
-            return;
+        } else {
+            setRowAndCol(rowNumberValue, columnNumberValue);
+            defaultNodes();
+
+            const rownum = sessionStorage.getItem('row_number');
+            const colnum = sessionStorage.getItem('column_number');
+
+            saveGridArray(rownum, colnum);
+            createGridLayout(rownum, colnum);
         }
-
-        setRowAndCol(rowNumberValue, columnNumberValue);
-        defaultNodes();
-
-        const rownum = sessionStorage.getItem('row_number');
-        const colnum = sessionStorage.getItem('column_number');
-
-        saveGridArray(rownum, colnum);
-        createGridLayout(rownum, colnum);
     });
 
     $('.start-node-selector, .block-node-selector, .end-node-selector').click(function() {
