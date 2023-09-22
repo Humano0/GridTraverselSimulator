@@ -282,7 +282,7 @@ async function reconstructPathBFS (startnode, endnode, prev) {
 	if(path[0] == startnode) {
 		await lightThePath(path);
 	} else {
-		console.log('no path found');
+		alert('No path found.');
 	}
 }
 // startnode = id of starting node
