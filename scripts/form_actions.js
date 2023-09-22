@@ -474,10 +474,19 @@ async function clearGrid() {
     sessionStorage.setItem('gridcells', JSON.stringify(grid));
 }
 
+function isValidValue(value) {
+    return !isNaN(value) && value >= 2 && value <= 50;
+}
+
 $(document).ready(function() {
     $('.size-apply').click(function() {
         const rowNumberValue = $('#row').val();
         const columnNumberValue = $('#column').val();
+
+        if (!isValidValue(rowNumberValue) || !isValidValue(columnNumberValue)) {
+            alert('Please enter valid values between 2 and 50 for both rows and columns.');
+            return;
+        }
 
         setRowAndCol(rowNumberValue, columnNumberValue);
         defaultNodes();
