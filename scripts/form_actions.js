@@ -131,6 +131,27 @@ function defaultNodes() {
     sessionStorage.setItem('endnode', 'io-o');
 }
 
+function addListenerGrid() {
+    const gridLayoutWrapper = $('.grid-layout-wrapper');
+    // Add event listeners for mouse events
+    gridLayoutWrapper.on('mousedown', () => {
+        isMouseDown = true;
+    });
+    gridLayoutWrapper.on('mouseup', () => {
+        isMouseDown = false;
+        lastClickedCell = null;
+    });
+    gridLayoutWrapper.on('mousemove', (event) => {
+        if (isMouseDown) {
+            const targetGridCell = event.target;
+            if (targetGridCell.classList.contains('grid-cell') && targetGridCell !== lastClickedCell) {
+                targetGridCell.click();
+                lastClickedCell = targetGridCell;
+            }
+        }
+    });
+}
+
 function createGridLayout(rownum, colnum) {
     const gridLayoutWrapper = $('.grid-layout-wrapper');
     gridLayoutWrapper.empty();
@@ -152,24 +173,7 @@ function createGridLayout(rownum, colnum) {
         'gap': '1px'
     });
 
-    // Add event listeners for mouse events
-    gridLayoutWrapper.on('mousedown', () => {
-        isMouseDown = true;
-    });
-    gridLayoutWrapper.on('mouseup', () => {
-        isMouseDown = false;
-        lastClickedCell = null;
-    });
-
-    gridLayoutWrapper.on('mousemove', (event) => {
-        if (isMouseDown) {
-            const targetGridCell = event.target;
-            if (targetGridCell.classList.contains('grid-cell') && targetGridCell !== lastClickedCell) {
-                targetGridCell.click();
-                lastClickedCell = targetGridCell;
-            }
-        }
-    });
+    addListenerGrid();
 }
 
 function createAdjacencyList(grid) {
@@ -402,6 +406,7 @@ function clear() {
 }
 
 async function simulateButton() {
+    $('.grid-cell').addClass('non-interactable');
     const algo = sessionStorage.getItem('selected_algorithm');
     const grid = JSON.parse(sessionStorage.getItem('gridcells'));
     const startNode = sessionStorage.getItem('startnode');
@@ -436,6 +441,7 @@ async function simulateButton() {
         errormessage = errormessage.slice(0, -1) + '.';
         alert(errormessage);
     }
+    $('.grid-cell').removeClass('non-interactable');
     enableForm($('button, input, select'));
 }
 
@@ -503,7 +509,7 @@ $(document).ready(function() {
     });
 
     $('.start-node-selector, .block-node-selector, .end-node-selector').click(function() {
-        var buttonClass = $(this).attr('class');
+        let buttonClass = $(this).attr('class');
         buttonClassChanger(buttonClass);
     });
 

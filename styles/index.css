@@ -262,3 +262,6 @@ button {
     background-color: white;
 }
 
+.non-interactable {
+    pointer-events: none;
+}
