@@ -399,7 +399,21 @@ async function simulateButton() {
                 break;
         }
     } else {
-        alert ("missing info");
+        let errormessage = "Missing:";
+        if(algo === null) {
+            errormessage += " algorithm,"
+        }
+        if(grid === null) {
+            errormessage += " grid layout,"
+        }
+        if(startNode === 'io-o') {
+            errormessage += " starting node,"
+        }
+        if(endNode === 'io-o') {
+            errormessage += " ending node,"
+        }
+        errormessage = errormessage.slice(0, -1) + '.';
+        alert(errormessage);
     }
     enableForm($('button, input, select'));
 }
