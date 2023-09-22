@@ -1,6 +1,6 @@
 # GridTraverselSimulator
 
-  This is a project to simulate BFS/DFS (DFS work in progress) algorithms on grids. 
+  This is a project to simulate BFS/DFS (DFS work in progress) algorithms on grids.
 
 
 
