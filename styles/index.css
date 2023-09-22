@@ -70,7 +70,7 @@ fieldset {
 }
 .footer {
     position: inline;
-    width: 100vw;
+    width: 99vw;
     height: var(--footer-height);
     bottom: 0vh;
     background-color: var(--liner-background-color);
@@ -235,3 +235,30 @@ button {
 .path-elem {
     background-color: white;
 }
+
+
+.footer-svg-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.footer-svg-wrapper img {
+    max-height: 100%;
+    width: auto;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -o-border-radius: 5px;
+}
+.footer-svg-wrapper img:hover {
+    outline: 1px solid white;
+    cursor: pointer;
+}
+
+.linkedin-img {
+    background-color: white;
+}
+
