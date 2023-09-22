@@ -1,3 +1,6 @@
+let isMouseDown = false;
+let lastClickedCell = null;
+
 function splitID (id) {
 	const splittedID = id.slice(1).split('-');
     return splittedID;
@@ -147,12 +150,30 @@ function createGridLayout(rownum, colnum) {
         'grid-template-rows': `repeat(${rownum}, 1fr)`,
         'grid-template-columns': `repeat(${colnum}, 1fr)`,
         'gap': '1px'
-    })
+    });
+
+    // Add event listeners for mouse events
+    gridLayoutWrapper.on('mousedown', () => {
+        isMouseDown = true;
+    });
+    gridLayoutWrapper.on('mouseup', () => {
+        isMouseDown = false;
+        lastClickedCell = null;
+    });
+
+    gridLayoutWrapper.on('mousemove', (event) => {
+        if (isMouseDown) {
+            const targetGridCell = event.target;
+            if (targetGridCell.classList.contains('grid-cell') && targetGridCell !== lastClickedCell) {
+                targetGridCell.click();
+                lastClickedCell = targetGridCell;
+            }
+        }
+    });
 }
+
 function createAdjacencyList(grid) {
 	const adjacencyList = {};
-
-	// Define directions (up, down, left, right)
 	const directions = [[-1, 0], [1, 0], [0, -1], [0, 1]];
 
 	for (let row = 0; row < grid.length; row++) {
