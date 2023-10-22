@@ -4,6 +4,7 @@
         "blockingnode",
         "blocknode",
         "bnode",
+        "celldetails",
         "colnum",
         "endingnode",
         "endnode",
@@ -12,12 +13,15 @@
         "gridcells",
         "idsplit",
         "interactable",
+        "mapu",
         "neighbours",
         "oldendnode",
         "oldstartnode",
         "rownum",
         "rownumber",
+        "smallestkey",
         "snode",
+        "startaxis",
         "startingnode",
         "startnode"
     ]

@@ -1,13 +1,10 @@
+import { astar } from "./algorithms/astar.js";
+import { splitID, delay } from "./simple_functions.js";
+import { lightThePathBFS } from "./light_the_path.js";
+
+
 let isMouseDown = false;
 let lastClickedCell = null;
-
-function splitID (id) {
-	const splittedID = id.slice(1).split('-');
-    return splittedID;
-}
-function delay(ms) {
-	return new Promise(resolve => setTimeout(resolve, ms));
-}
 
 async function handleGridClick (event) {
     const nodeSelector = sessionStorage.getItem('node_type');
@@ -235,15 +232,6 @@ function enableForm(formElements) {
     $(formElements).prop('disabled', false);
 }
 
-async function lightThePath(path) {
-    for (let x = 1; x < path.length - 1; x++) {
-		await delay(25);
-        let pathElement = document.body.querySelector(`#${path[x]}`);
-		pathElement.classList.remove('visited-node');
-        pathElement.classList.add('path-elem');
-    }
-}
-
 /*
     *******BFS*******
     *******BFS*******
@@ -305,7 +293,7 @@ async function reconstructPathBFS (startnode, endnode, prev) {
 	path.reverse();
 
 	if(path[0] == startnode) {
-		await lightThePath(path);
+		await lightThePathBFS(path);
 	} else {
 		alert('No path found.');
 	}
@@ -318,17 +306,6 @@ async function bfs (grid, startnode, endnode) {
 
 	await reconstructPathBFS(startnode, endnode, prev);
 }
-
-
-/*
-    *******AStar*******
-    *******AStar*******
-    *******AStar*******
-    *******AStar*******
-    *******AStar*******
-*/
-
-
 
 function clear() {
     const gridElements = document.querySelectorAll('.grid-cell');
@@ -354,8 +331,8 @@ async function simulateButton() {
             case 'bfs':
                 await bfs(grid, startNode, endNode);
                 break;
-            case 'dfs':
-                await dfs(grid, startNode, endNode);
+            case 'astar':
+                await astar(grid, startNode, endNode);
                 break;
         }
     } else {
