@@ -1,0 +1,28 @@
+{
+    "cSpell.words": [
+        "astar",
+        "blockingnode",
+        "blocknode",
+        "bnode",
+        "celldetails",
+        "colnum",
+        "endingnode",
+        "endnode",
+        "enode",
+        "errormessage",
+        "gridcells",
+        "idsplit",
+        "interactable",
+        "mapu",
+        "neighbours",
+        "oldendnode",
+        "oldstartnode",
+        "rownum",
+        "rownumber",
+        "smallestkey",
+        "snode",
+        "startaxis",
+        "startingnode",
+        "startnode"
+    ]
+}
