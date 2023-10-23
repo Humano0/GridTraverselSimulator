@@ -10,7 +10,7 @@ export async function lightThePathBFS(path) {
 }
 
 export async function lightThePathASTAR(path) {
-    for (let x = 0; x < path.length; x++) {
+    for (let x = 0; x < path.length - 1; x++) {
         await delay(25);
         let pathElement = document.body.querySelector(`#${path[x]}`);
         pathElement.classList.remove("visited-node");
