@@ -36,7 +36,7 @@ function isUnblocked(grid, row, col) {
 // Euclidean Distance Formula
 function calculateHValue(row, col, endNode) {
 	const splitEnd = splitID(endNode);
-	return Math.sqrt((row - splitEnd[0]) * (row - splitEnd[0]) + (col - splitEnd[1]) * (col - splitEnd[1]));
+	return Number(Math.sqrt((Number(row) - Number(splitEnd[0])) * (Number(row) - Number(splitEnd[0])) + (Number(col) - Number(splitEnd[1])) * (Number(col) - Number(splitEnd[1]))));
 }
 
 function createClosedList(rowNumber, columnNumber) {
@@ -127,121 +127,110 @@ export async function astar(grid, startNode, endNode) {
       	// Add this vertex to the closed list
 		i = Number(p[0]);
 		j = Number(p[1]);
+		let id = idJoiner(i, j);
+		if(id !== startNode) {
+			await lightVisited(id);
+		}
 		closedList[i][j] = true;
 
 		let gNew, hNew, fNew;
 
 		// NORTH
-		if (isValid(i - 1, j, rowNumber, columnNumber) == true) {
-			if (isDestination(i - 1, j, endNode) == true) {
+		if (isValid(i - 1, j, rowNumber, columnNumber) === true) {
+			if (isDestination(i - 1, j, endNode) === true) {
 				cellDetails[i - 1][j].parent_i = i;
 				cellDetails[i - 1][j].parent_j = j;
 				foundDestination = true;
-				break;
 			}
-			else if ( closedList[i - 1][j] == false && isUnblocked(grid, i - 1, j) == true ) {
+			else if ( closedList[i - 1][j] === false && isUnblocked(grid, i - 1, j) === true ) {
 				gNew = cellDetails[i][j].g + 1;
 				hNew = calculateHValue(i - 1, j, endNode);
-				fNew = gNew + hNew;
+				fNew = Number(gNew) + Number(hNew);
 				if ( cellDetails[i - 1][j].f == 2147483647 || cellDetails[i - 1][j].f > fNew ) {
-					let id = idJoiner(i - 1, j);
-					await lightVisited(id);
-					openList.set(fNew, [i - 1, j]);
-					cellDetails[i - 1][j].f = fNew;
-					cellDetails[i - 1][j].g = gNew;
-					cellDetails[i - 1][j].h = hNew;
+					openList.set(Number(fNew), [i - 1, j]);
+					cellDetails[i - 1][j].f = Number(fNew);
+					cellDetails[i - 1][j].g = Number(gNew);
+					cellDetails[i - 1][j].h = Number(hNew);
 					cellDetails[i - 1][j].parent_i = i;
 					cellDetails[i - 1][j].parent_j = j;
 				}
 			}
 		}
 		// SOUTH
-		if (isValid(i + 1, j, rowNumber, columnNumber) == true) {
-			if (isDestination(i + 1, j, endNode) == true) {
+		if (isValid(i + 1, j, rowNumber, columnNumber) === true) {
+			if (isDestination(i + 1, j, endNode) === true) {
 				cellDetails[i + 1][j].parent_i = i;
 				cellDetails[i + 1][j].parent_j = j;
 				foundDestination = true;
-				break;
 			}
-			else if ( closedList[i + 1][j] == false && isUnblocked(grid, i + 1, j) == true ) {
+			else if ( closedList[i + 1][j] === false && isUnblocked(grid, i + 1, j) === true ) {
 				gNew = cellDetails[i][j].g + 1;
 				hNew = calculateHValue(i + 1, j, endNode);
-				fNew = gNew + hNew;
+				fNew = Number(gNew) + Number(hNew);
 				if ( cellDetails[i + 1][j].f == 2147483647 || cellDetails[i + 1][j].f > fNew ) {
-					let id = idJoiner(i + 1, j);
-					await lightVisited(id);
-					openList.set(fNew, [i + 1, j]);
-					cellDetails[i + 1][j].f = fNew;
-					cellDetails[i + 1][j].g = gNew;
-					cellDetails[i + 1][j].h = hNew;
+					openList.set(Number(fNew), [i + 1, j]);
+					cellDetails[i + 1][j].f = Number(fNew);
+					cellDetails[i + 1][j].g = Number(gNew);
+					cellDetails[i + 1][j].h = Number(hNew);
 					cellDetails[i + 1][j].parent_i = i;
 					cellDetails[i + 1][j].parent_j = j;
 				}
 			}
 		}
 		// EAST
-		if (isValid(i, j + 1, rowNumber, columnNumber) == true) {
-			if (isDestination(i, j + 1, endNode) == true) {
+		if (isValid(i, j + 1, rowNumber, columnNumber) === true) {
+			if (isDestination(i, j + 1, endNode) === true) {
 				cellDetails[i][j + 1].parent_i = i;
 				cellDetails[i][j + 1].parent_j = j;
 				foundDestination = true;
-				break;
 			}
-			else if ( closedList[i][j + 1] == false && isUnblocked(grid, i, j + 1) == true ) {
+			else if ( closedList[i][j + 1] === false && isUnblocked(grid, i, j + 1) === true ) {
 				gNew = cellDetails[i][j].g + 1;
 				hNew = calculateHValue(i, j + 1, endNode);
-				fNew = gNew + hNew;
+				fNew = Number(gNew) + Number(hNew);
 				if ( cellDetails[i][j + 1].f == 2147483647 || cellDetails[i][j + 1].f > fNew ) {
-					let id = idJoiner(i, j + 1);
-					await lightVisited(id);
 					openList.set(fNew, [i, j + 1]);
-					cellDetails[i][j + 1].f = fNew;
-					cellDetails[i][j + 1].g = gNew;
-					cellDetails[i][j + 1].h = hNew;
+					cellDetails[i][j + 1].f = Number(fNew);
+					cellDetails[i][j + 1].g = Number(gNew);
+					cellDetails[i][j + 1].h = Number(hNew);
 					cellDetails[i][j + 1].parent_i = i;
 					cellDetails[i][j + 1].parent_j = j;
 				}
 			}
 		}
 		// WEST
-		if (isValid(i, j - 1, rowNumber, columnNumber) == true) {
-			if (isDestination(i, j - 1, endNode) == true) {
+		if (isValid(i, j - 1, rowNumber, columnNumber) === true) {
+			if (isDestination(i, j - 1, endNode) === true) {
 				cellDetails[i][j - 1].parent_i = i;
 				cellDetails[i][j - 1].parent_j = j;
 				foundDestination = true;
-				break;
 			}
-			else if ( closedList[i][j - 1] == false && isUnblocked(grid, i, j - 1) == true ) {
+			else if ( closedList[i][j - 1] === false && isUnblocked(grid, i, j - 1) === true ) {
 				gNew = cellDetails[i][j].g + 1;
 				hNew = calculateHValue(i, j - 1, endNode);
-				fNew = gNew + hNew;
+				fNew = Number(gNew) + Number(hNew);
 				if ( cellDetails[i][j - 1].f == 2147483647 || cellDetails[i][j - 1].f > fNew ) {
-					let id = idJoiner(i, j - 1);
-					await lightVisited(id);
-					openList.set(fNew, [i, j - 1]);
-					cellDetails[i][j - 1].f = fNew;
-					cellDetails[i][j - 1].g = gNew;
-					cellDetails[i][j - 1].h = hNew;
+					openList.set(Number(fNew), [i, j - 1]);
+					cellDetails[i][j - 1].f = Number(fNew);
+					cellDetails[i][j - 1].g = Number(gNew);
+					cellDetails[i][j - 1].h = Number(hNew);
 					cellDetails[i][j - 1].parent_i = i;
 					cellDetails[i][j - 1].parent_j = j;
 				}
 			}
 		}
 		// NORTH EAST
-		if (isValid(i - 1, j + 1) == true) {
+		if (isValid(i - 1, j + 1, rowNumber, columnNumber) == true && (grid[i - 1][j] !== 0 || grid[i][j + 1] !== 0)) {
 			if (isDestination(i - 1, j + 1, endNode) == true) {
 				cellDetails[i - 1][j + 1].parent_i = i;
 				cellDetails[i - 1][j + 1].parent_j = j;
 				foundDestination = true;
-				break;
 			}
 			else if ( closedList[i - 1][j + 1] == false && isUnblocked(grid, i - 1, j + 1) == true ) {
 				gNew = cellDetails[i][j].g + 1.414;
 				hNew = calculateHValue(i - 1, j + 1, endNode);
 				fNew = gNew + hNew;
 				if ( cellDetails[i - 1][j + 1].f == 2147483647 || cellDetails[i - 1][j + 1].f > fNew ) {
-					let id = idJoiner(i - 1, j + 1);
-					await lightVisited(id);
 					openList.set(fNew, [i - 1, j + 1]);
 					cellDetails[i - 1][j + 1].f = fNew;
 					cellDetails[i - 1][j + 1].g = gNew;
@@ -252,20 +241,17 @@ export async function astar(grid, startNode, endNode) {
 			}
 		}
 		// NORTH WEST
-		if (isValid(i - 1, j - 1) == true) {
+		if (isValid(i - 1, j - 1, rowNumber, columnNumber) == true && (grid[i - 1][j] !== 0 || grid[i][j - 1] !== 0)) {
 			if (isDestination(i - 1, j - 1, endNode) == true) {
 				cellDetails[i - 1][j - 1].parent_i = i;
 				cellDetails[i - 1][j - 1].parent_j = j;
 				foundDestination = true;
-				break;
 			}
 			else if ( closedList[i - 1][j - 1] == false && isUnblocked(grid, i - 1, j - 1) == true ) {
 				gNew = cellDetails[i][j].g + 1.414;
 				hNew = calculateHValue(i - 1, j - 1, endNode);
 				fNew = gNew + hNew;
 				if ( cellDetails[i - 1][j - 1].f == 2147483647 || cellDetails[i - 1][j - 1].f > fNew ) {
-					let id = idJoiner(i - 1, j - 1);
-					await lightVisited(id);
 					openList.set(fNew, [i - 1, j - 1]);
 					cellDetails[i - 1][j - 1].f = fNew;
 					cellDetails[i - 1][j - 1].g = gNew;
@@ -276,20 +262,17 @@ export async function astar(grid, startNode, endNode) {
 			}
 		}
 		// SOUTH EAST
-		if (isValid(i + 1, j + 1) == true) {
+		if (isValid(i + 1, j + 1, rowNumber, columnNumber) == true && (grid[i + 1][j] !== 0 || grid[i][j + 1] !== 0)) {
 			if (isDestination(i + 1, j + 1, endNode) == true) {
 				cellDetails[i + 1][j + 1].parent_i = i;
 				cellDetails[i + 1][j + 1].parent_j = j;
 				foundDestination = true;
-				break;
 			}
 			else if ( closedList[i + 1][j + 1] == false && isUnblocked(grid, i + 1, j + 1) == true ) {
 				gNew = cellDetails[i][j].g + 1.414;
 				hNew = calculateHValue(i + 1, j + 1, endNode);
 				fNew = gNew + hNew;
 				if ( cellDetails[i + 1][j + 1].f == 2147483647 || cellDetails[i + 1][j + 1].f > fNew ) {
-					let id = idJoiner(i + 1, j + 1);
-					await lightVisited(id);
 					openList.set(fNew, [i + 1, j + 1]);
 					cellDetails[i + 1][j + 1].f = fNew;
 					cellDetails[i + 1][j + 1].g = gNew;
@@ -300,20 +283,17 @@ export async function astar(grid, startNode, endNode) {
 			}
 		}
 		// SOUTH WEST
-		if (isValid(i + 1, j - 1) == true) {
+		if (isValid(i + 1, j - 1, rowNumber, columnNumber) == true && (grid[i + 1][j] !== 0 || grid[i][j - 1] !== 0)) {
 			if (isDestination(i + 1, j - 1, endNode) == true) {
 				cellDetails[i + 1][j - 1].parent_i = i;
 				cellDetails[i + 1][j - 1].parent_j = j;
 				foundDestination = true;
-				break;
 			}
 			else if ( closedList[i + 1][j - 1] == false && isUnblocked(grid, i + 1, j - 1) == true ) {
 				gNew = cellDetails[i][j].g + 1.414;
 				hNew = calculateHValue(i + 1, j - 1, endNode);
 				fNew = gNew + hNew;
 				if ( cellDetails[i + 1][j - 1].f == 2147483647 || cellDetails[i + 1][j - 1].f > fNew ) {
-					let id = idJoiner(i + 1, j - 1);
-					await lightVisited(id);
 					openList.set(fNew, [i + 1, j - 1]);
 					cellDetails[i + 1][j - 1].f = fNew;
 					cellDetails[i + 1][j - 1].g = gNew;
@@ -323,9 +303,13 @@ export async function astar(grid, startNode, endNode) {
 				}
 			}
 		}
+		if(foundDestination === true) {
+			break;
+		}
 	}
+
 	if (foundDestination == false)
-        alert("Failed to find the Destination Cell\n");
+        alert("Failed to find a path");
 	else
 		await tracePath(cellDetails, endNode);
 
