@@ -1,4 +1,6 @@
+import { createAdjacencyList, createPreviousArray, createVisitedArray } from './grid_functions.js';
 import { astar } from "./algorithms/astar.js";
+import { dfs } from "./algorithms/dfs.js"
 import { splitID, delay } from "./simple_functions.js";
 import { lightThePathBFS } from "./light_the_path.js";
 
@@ -173,57 +175,8 @@ function createGridLayout(rownum, colnum) {
     addListenerGrid();
 }
 
-function createAdjacencyList(grid) {
-	const adjacencyList = {};
-	const directions = [[-1, 0], [1, 0], [0, -1], [0, 1]];
 
-	for (let row = 0; row < grid.length; row++) {
-	  	for (let col = 0; col < grid[row].length; col++) {
-			if (grid[row][col] !== 0) {
-				const node = `i${row}-${col}`;
-				adjacencyList[node] = [];
 
-				// Check adjacent cells
-				for (const [dx, dy] of directions) {
-					const newRow = row + dx;
-					const newCol = col + dy;
-
-					// Check if the adjacent cell is within bounds and traversable
-					if (
-						newRow >= 0 &&
-						newRow < grid.length &&
-						newCol >= 0 &&
-						newCol < grid[newRow].length &&
-						grid[newRow][newCol] !== 0
-					) {
-						adjacencyList[node].push(`i${newRow}-${newCol}`);
-					}
-				}
-			}
-	  	}
-	}
-	return adjacencyList;
-}
-function createVisitedArray(rownum, colnum) {
-	let arr = [];
-    for(let i = 0; i < rownum; i++) {
-        arr[i] = [];
-        for(let j = 0; j < colnum; j++) {
-            arr[i][j] = false;
-        }
-    }
-	return arr;
-}
-function createPreviousArray(rownum, colnum) {
-	let arr = [];
-    for(let i = 0; i < rownum; i++) {
-        arr[i] = [];
-        for(let j = 0; j < colnum; j++) {
-            arr[i][j] = null;
-        }
-    }
-	return arr;
-}
 
 function disableForm(formElements) {
     $(formElements).prop('disabled', true);
@@ -330,6 +283,9 @@ async function simulateButton() {
         switch(algo) {
             case 'bfs':
                 await bfs(grid, startNode, endNode);
+                break;
+            case 'dfs':
+                await dfs(grid, startNode, endNode);
                 break;
             case 'astar':
                 await astar(grid, startNode, endNode);
