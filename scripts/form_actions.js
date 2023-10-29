@@ -1,9 +1,7 @@
-import { createAdjacencyList, createPreviousArray, createVisitedArray } from './grid_functions.js';
 import { astar } from "./algorithms/astar.js";
 import { dfs } from "./algorithms/dfs.js"
-import { splitID, delay } from "./simple_functions.js";
-import { lightThePathBFS } from "./light_the_path.js";
-
+import { bfs } from './algorithms/bfs.js';
+import { splitID, clear, clearGrid } from "./simple_functions.js";
 
 let isMouseDown = false;
 let lastClickedCell = null;
@@ -175,98 +173,11 @@ function createGridLayout(rownum, colnum) {
     addListenerGrid();
 }
 
-
-
-
 function disableForm(formElements) {
     $(formElements).prop('disabled', true);
 }
 function enableForm(formElements) {
     $(formElements).prop('disabled', false);
-}
-
-/*
-    *******BFS*******
-    *******BFS*******
-    *******BFS*******
-    *******BFS*******
-    *******BFS*******
-*/
-async function solveBFS(startnode, adjacencyList, rownumber, columnnumber, endnode) {
-    let breaker = false;
-    let queue = [];
-    queue.push(startnode);
-
-    let visited = createVisitedArray(rownumber, columnnumber);
-    let id = splitID(startnode);
-    visited[id[0]][id[1]] = true;
-
-    let prev = createPreviousArray(rownumber, columnnumber);
-
-    while (queue.length) {
-        let node = queue.shift();
-        let neighbours = adjacencyList[node];
-        for (let next of neighbours) {
-            let id = splitID(next);
-            let visitedElem = document.querySelector(`#${next}`);
-            if (visitedElem.id !== startnode && visitedElem.id !== endnode) {
-                visitedElem.classList.add('visited-node');
-                // Delay for a smoother effect
-                await delay(5);
-                // Increment the opacity (e.g., by 0.1 each time)
-                visitedElem.style.opacity = parseFloat(visitedElem.style.opacity) + 0.1;
-            }
-            if (!visited[id[0]][id[1]]) {
-                queue.push(next);
-                visited[id[0]][id[1]] = true;
-                prev[id[0]][id[1]] = node;
-            }
-            if (next == endnode) {
-                breaker = true;
-                break;
-            }
-        }
-        if (breaker) {
-            break;
-        }
-    }
-    return prev;
-}
-// startnode && endnode == id of the elements
-// prev == two dimensional array with ids
-async function reconstructPathBFS (startnode, endnode, prev) {
-	let path = [];
-	let at = splitID(endnode);
-
-	// save the path to path array
-	for(let pos = endnode; pos != null; pos = prev[at[0]][at[1]]) {
-		at = splitID(pos);
-		path.push(pos);
-	}
-	path.reverse();
-
-	if(path[0] == startnode) {
-		await lightThePathBFS(path);
-	} else {
-		alert('No path found.');
-	}
-}
-// startnode = id of starting node
-// endnode = id of ending node
-async function bfs (grid, startnode, endnode) {
-	const adjacencyList = createAdjacencyList(grid);
-    const prev = await solveBFS(startnode, adjacencyList, grid.length, grid[0].length, endnode);
-
-	await reconstructPathBFS(startnode, endnode, prev);
-}
-
-function clear() {
-    const gridElements = document.querySelectorAll('.grid-cell');
-    gridElements.forEach((element) => {
-        if (element.classList.contains('path-elem') || element.classList.contains('visited-node')) {
-            element.classList.remove('path-elem', 'visited-node');
-        }
-    })
 }
 
 async function simulateButton() {
@@ -312,40 +223,7 @@ async function simulateButton() {
     enableForm($('button, input, select'));
 }
 
-async function clearGrid() {
-    const gridElements = document.querySelectorAll('.grid-cell');
-    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-    const grid = JSON.parse(sessionStorage.getItem('gridcells'));
 
-    sessionStorage.setItem('simulated', false);
-
-    gridElements.forEach(element => {
-        if (element.classList.contains('path-elem') || element.classList.contains('visited-node')) {
-            element.classList.remove('path-elem', 'visited-node');
-        }
-        let id = splitID(element.id);
-        checkboxes.forEach(checkbox => {
-            if (checkbox.checked) {
-                const value = checkbox.value;
-                if (value === 'snode' && element.classList.contains('startingnode')) {
-                    element.classList.remove('startingnode');
-                    sessionStorage.setItem('startnode', 'io-o');
-                    grid[id[0]][id[1]] = 1;
-                } else if (value === 'bnode' && element.classList.contains('blockingnode')) {
-                    element.classList.remove('blockingnode');
-                    let arr = [""];
-                    sessionStorage.setItem('blocknode', JSON.stringify(arr));
-                    grid[id[0]][id[1]] = 1;
-                } else if (value === 'enode' && element.classList.contains('endingnode')) {
-                    element.classList.remove('endingnode');
-                    sessionStorage.setItem('endnode', 'io-o');
-                    grid[id[0]][id[1]] = 1;
-                }
-            }
-        });
-    });
-    sessionStorage.setItem('gridcells', JSON.stringify(grid));
-}
 
 function isValidValue(value) {
     return !isNaN(value) && value >= 2 && value <= 50;
