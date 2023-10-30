@@ -27,7 +27,7 @@ function isValid(nodeRow, nodeColumn, rowNumber, columnNumber) {
 }
 
 function isUnblocked(grid, row, col) {
-	if (grid[row][col] !== 0)
+	if (Number(grid[row][col]) !== 0)
 		return true;
 	else
 		return false;
@@ -189,7 +189,7 @@ export async function astar(grid, startNode, endNode) {
 				hNew = calculateHValue(i, j + 1, endNode);
 				fNew = Number(gNew) + Number(hNew);
 				if ( cellDetails[i][j + 1].f == 2147483647 || cellDetails[i][j + 1].f > fNew ) {
-					openList.set(fNew, [i, j + 1]);
+					openList.set(Number(fNew), [i, j + 1]);
 					cellDetails[i][j + 1].f = Number(fNew);
 					cellDetails[i][j + 1].g = Number(gNew);
 					cellDetails[i][j + 1].h = Number(hNew);
